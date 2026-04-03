@@ -1,0 +1,57 @@
+/* ============================================================
+   WATER SUPPLY ADMIN — Topbar
+   ============================================================ */
+
+@import '../../styles/variables.css';
+
+.topbar {
+  height: var(--topbar-height);
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 var(--space-6);
+  gap: var(--space-4);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.topbar-menu-btn {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--color-text-secondary);
+  padding: var(--space-2);
+  border-radius: var(--radius-sm);
+  margin-right: auto;
+  transition: background var(--transition-fast);
+}
+
+.topbar-menu-btn:hover { background: var(--color-bg); }
+
+.topbar-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-5);
+}
+
+.topbar-expiry,
+.topbar-date {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+.topbar-expiry.expired {
+  color: var(--color-error);
+  font-weight: var(--font-medium);
+}
+
+@media (max-width: 768px) {
+  .topbar-menu-btn { display: flex; }
+  .topbar { padding: 0 var(--space-4); }
+}

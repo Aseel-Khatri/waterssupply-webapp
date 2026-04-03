@@ -1,0 +1,287 @@
+/* ============================================================
+   WATER SUPPLY ADMIN — Counter Sales
+   ============================================================ */
+
+@import '../../styles/variables.css';
+
+.cs-page { display: flex; flex-direction: column; gap: var(--space-5); max-width: 800px; }
+
+/* ── Header ──────────────────────────────────────────────── */
+.cs-header {
+  display: flex; align-items: flex-start;
+  justify-content: space-between; gap: var(--space-4);
+}
+
+.btn-add {
+  display: flex; align-items: center; gap: var(--space-2);
+  height: 40px; padding: 0 var(--space-5);
+  background: var(--color-primary); color: white;
+  border: none; border-radius: var(--radius-md);
+  font-size: var(--text-sm); font-weight: var(--font-semibold); font-family: var(--font-sans);
+  cursor: pointer; box-shadow: 0 2px 10px rgba(13,110,253,0.25);
+  transition: all var(--transition-fast); white-space: nowrap;
+}
+.btn-add:hover { background: var(--color-primary-dark); transform: translateY(-1px); }
+
+/* ── Top bar ─────────────────────────────────────────────── */
+.cs-top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  background: var(--color-surface);
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4) var(--space-5);
+}
+
+/* Date navigator */
+.cs-date-nav { display: flex; align-items: center; gap: var(--space-3); }
+
+.date-nav-btn {
+  width: 32px; height: 32px;
+  display: flex; align-items: center; justify-content: center;
+  border: 1.5px solid var(--color-border); border-radius: var(--radius-md);
+  background: var(--color-bg); color: var(--color-text-secondary);
+  cursor: pointer; transition: border-color var(--transition-fast), color var(--transition-fast);
+}
+.date-nav-btn:hover:not(:disabled) { border-color: var(--color-primary); color: var(--color-primary); }
+.date-nav-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+
+.cs-date-display {
+  display: flex; align-items: center; gap: var(--space-2);
+  color: var(--color-text-secondary);
+  position: relative;
+}
+
+/* Hide native date input visually, overlay the label */
+.cs-date-input {
+  position: absolute; inset: 0; opacity: 0;
+  cursor: pointer; width: 100%;
+}
+
+.cs-date-label {
+  font-size: var(--text-sm); font-weight: var(--font-semibold);
+  color: var(--color-text-primary); white-space: nowrap;
+  pointer-events: none;
+}
+
+.cs-today-badge {
+  font-size: 11px; font-weight: var(--font-semibold);
+  background: var(--color-primary-light); color: var(--color-primary);
+  padding: 2px 8px; border-radius: var(--radius-full);
+  pointer-events: none;
+}
+
+/* Summary */
+.cs-summary {
+  display: flex; flex-direction: column; align-items: flex-end; gap: 2px;
+}
+.cs-summary-label {
+  font-size: var(--text-xs); color: var(--color-text-muted);
+  text-transform: uppercase; letter-spacing: 0.05em; font-weight: var(--font-medium);
+}
+.cs-summary-value {
+  font-family: var(--font-display);
+  font-size: var(--text-xl); font-weight: var(--font-bold);
+  color: var(--color-primary);
+}
+
+/* ── States ──────────────────────────────────────────────── */
+.cs-state {
+  display: flex; flex-direction: column; align-items: center;
+  justify-content: center; gap: var(--space-3);
+  padding: 70px var(--space-6); color: var(--color-text-muted); font-size: var(--text-sm);
+}
+.cs-state.error { color: var(--color-error); }
+.spinner-ring {
+  width: 30px; height: 30px;
+  border: 3px solid var(--color-border); border-top-color: var(--color-primary);
+  border-radius: 50%; animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.btn-retry { padding: 6px var(--space-4); background: var(--color-primary); color: white; border: none; border-radius: var(--radius-md); font-size: var(--text-sm); cursor: pointer; }
+
+/* ── Sale cards ──────────────────────────────────────────── */
+.cs-list { display: flex; flex-direction: column; gap: var(--space-3); }
+
+.cs-card {
+  background: var(--color-surface);
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4) var(--space-5);
+  display: flex; align-items: center; gap: var(--space-4);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+.cs-card:hover {
+  border-color: rgba(13,110,253,0.2);
+  box-shadow: 0 3px 16px rgba(0,0,0,0.06);
+}
+
+.cs-card-index {
+  width: 32px; height: 32px; flex-shrink: 0;
+  border-radius: var(--radius-md);
+  background: var(--color-bg);
+  border: 1.5px solid var(--color-border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: var(--text-xs); font-weight: var(--font-bold);
+  color: var(--color-text-muted);
+}
+
+.cs-card-body { flex: 1; display: flex; flex-direction: column; gap: 3px; }
+
+.cs-card-amount {
+  font-family: var(--font-display);
+  font-size: var(--text-lg); font-weight: var(--font-bold);
+  color: var(--color-text-primary);
+}
+
+.cs-card-date { font-size: var(--text-xs); color: var(--color-text-muted); }
+
+.cs-card-actions { display: flex; gap: var(--space-2); }
+
+.cs-action-btn {
+  width: 32px; height: 32px;
+  display: flex; align-items: center; justify-content: center;
+  border: none; border-radius: var(--radius-md); cursor: pointer;
+  transition: background var(--transition-fast);
+}
+.cs-action-btn.edit   { background: #EFF6FF; color: #2563EB; }
+.cs-action-btn.edit:hover { background: #DBEAFE; }
+.cs-action-btn.delete { background: #FEF2F2; color: #DC2626; }
+.cs-action-btn.delete:hover { background: #FEE2E2; }
+
+/* ── Pagination ──────────────────────────────────────────── */
+.pagination { display: flex; align-items: center; justify-content: flex-end; gap: var(--space-3); }
+.page-btn {
+  display: flex; align-items: center; gap: var(--space-1);
+  padding: 7px var(--space-4); border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-md); background: var(--color-surface);
+  font-size: var(--text-sm); font-weight: var(--font-medium); font-family: var(--font-sans);
+  color: var(--color-text-secondary); cursor: pointer; transition: all var(--transition-fast);
+}
+.page-btn:hover:not(:disabled) { border-color: var(--color-primary); color: var(--color-primary); }
+.page-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.page-indicator { font-size: var(--text-sm); color: var(--color-text-muted); padding: 0 var(--space-2); }
+
+/* ── Modal ───────────────────────────────────────────────── */
+.cs-backdrop {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 200;
+  display: flex; align-items: center; justify-content: center; padding: var(--space-4);
+  animation: fadeIn 0.15s ease;
+}
+@keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+
+.cs-modal {
+  background: var(--color-surface); border-radius: var(--radius-xl);
+  width: 100%; max-width: 400px; box-shadow: var(--shadow-xl);
+  overflow: hidden; animation: slideUp 0.15s ease;
+}
+@keyframes slideUp { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
+
+.cs-modal.confirm {
+  padding: var(--space-8) var(--space-6);
+  display: flex; flex-direction: column; align-items: center; text-align: center; gap: var(--space-3);
+}
+
+.cs-modal-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: var(--space-5) var(--space-6); border-bottom: 1px solid var(--color-border);
+}
+.cs-modal-header-left { display: flex; align-items: center; gap: var(--space-3); }
+.cs-modal-icon {
+  width: 40px; height: 40px; background: var(--color-primary-light); color: var(--color-primary);
+  border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center;
+}
+.cs-modal-title { font-family: var(--font-display); font-size: var(--text-lg); font-weight: var(--font-bold); color: var(--color-text-primary); }
+.cs-modal-sub   { font-size: var(--text-xs); color: var(--color-text-muted); margin-top: 2px; }
+.cs-close {
+  width: 32px; height: 32px; background: var(--color-bg); border: none; border-radius: var(--radius-md);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--color-text-muted); cursor: pointer; transition: background var(--transition-fast);
+}
+.cs-close:hover { background: var(--color-border); }
+
+.cs-modal-body {
+  padding: var(--space-6); display: flex; flex-direction: column; gap: var(--space-5);
+}
+.cs-api-error {
+  padding: var(--space-3) var(--space-4); background: var(--color-error-bg);
+  border: 1px solid rgba(239,68,68,0.2); border-radius: var(--radius-md);
+  font-size: var(--text-sm); color: #B91C1C;
+}
+
+/* Big amount input */
+.cs-amount-input-wrap { position: relative; display: flex; align-items: center; }
+.cs-rupee {
+  position: absolute; left: 14px;
+  font-size: var(--text-lg); font-weight: var(--font-bold); color: var(--color-text-muted);
+  pointer-events: none;
+}
+.cs-amount-input {
+  width: 100%; height: 56px; padding: 0 var(--space-4) 0 36px;
+  border: 1.5px solid var(--color-border); border-radius: var(--radius-md);
+  font-family: var(--font-display); font-size: var(--text-2xl); font-weight: var(--font-bold);
+  color: var(--color-text-primary); background: var(--color-bg); outline: none;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+.cs-amount-input:focus { border-color: var(--color-primary); background: var(--color-surface); box-shadow: 0 0 0 3px rgba(13,110,253,0.08); }
+.cs-amount-input.error { border-color: var(--color-error); }
+
+.cs-modal-footer {
+  display: flex; justify-content: flex-end; gap: var(--space-3);
+  padding-top: var(--space-4); border-top: 1px solid var(--color-border);
+}
+
+/* Confirm dialog */
+.confirm-icon-wrap {
+  width: 54px; height: 54px; background: #FEF2F2; border: 1.5px solid rgba(239,68,68,0.2);
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  color: var(--color-error);
+}
+.confirm-title { font-family: var(--font-display); font-size: var(--text-xl); font-weight: var(--font-bold); color: var(--color-text-primary); }
+.confirm-msg   { font-size: var(--text-sm); color: var(--color-text-muted); line-height: 1.6; }
+
+/* form-group / button shared */
+.form-group { display: flex; flex-direction: column; gap: var(--space-2); }
+.form-label { font-size: var(--text-sm); font-weight: var(--font-medium); color: var(--color-text-secondary); }
+.field-hint { font-size: var(--text-xs); color: var(--color-text-muted); }
+.field-hint.error-hint { color: var(--color-error); }
+
+.btn-ghost {
+  height: 38px; padding: 0 var(--space-4); background: none;
+  border: 1.5px solid var(--color-border); border-radius: var(--radius-md);
+  font-size: var(--text-sm); font-weight: var(--font-medium); font-family: var(--font-sans);
+  color: var(--color-text-secondary); cursor: pointer;
+}
+.btn-ghost:hover { border-color: var(--color-text-secondary); }
+
+.btn-primary-sm {
+  height: 38px; padding: 0 var(--space-5); background: var(--color-primary); color: white;
+  border: none; border-radius: var(--radius-md);
+  font-size: var(--text-sm); font-weight: var(--font-medium); font-family: var(--font-sans);
+  cursor: pointer; display: flex; align-items: center; gap: var(--space-2);
+  transition: background var(--transition-fast);
+}
+.btn-primary-sm:hover:not(:disabled) { background: var(--color-primary-dark); }
+.btn-primary-sm:disabled { opacity: 0.65; cursor: not-allowed; }
+
+.btn-danger-sm {
+  height: 38px; padding: 0 var(--space-5); background: var(--color-error); color: white;
+  border: none; border-radius: var(--radius-md);
+  font-size: var(--text-sm); font-weight: var(--font-medium); font-family: var(--font-sans);
+  cursor: pointer; display: flex; align-items: center; gap: var(--space-2);
+}
+.btn-danger-sm:hover:not(:disabled) { background: #DC2626; }
+.btn-danger-sm:disabled { opacity: 0.65; cursor: not-allowed; }
+
+.spinner-xs {
+  width: 13px; height: 13px; border: 2px solid rgba(255,255,255,0.3); border-top-color: white;
+  border-radius: 50%; animation: spin 0.7s linear infinite; display: inline-block;
+}
+
+@media (max-width: 600px) {
+  .cs-top-bar { flex-direction: column; align-items: flex-start; }
+  .cs-summary { align-items: flex-start; }
+  .cs-header { flex-wrap: wrap; }
+}

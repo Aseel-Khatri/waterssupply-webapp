@@ -1,0 +1,63 @@
+/* ============================================================
+   WATER SUPPLY ADMIN — Register Page Styles
+   ============================================================ */
+
+@import '../../styles/variables.css';
+
+/* Flipped layout — visual on left, form on right */
+.register-root {
+  display: flex;
+  flex-direction: row-reverse;
+  min-height: 100vh;
+  width: 100%;
+  overflow: hidden;
+}
+
+/* Form panel needs scroll for taller content */
+.register-panel {
+  flex: 0 0 520px;
+  overflow-y: auto;
+  padding-top: var(--space-8) !important;
+  padding-bottom: var(--space-8) !important;
+}
+
+/* Two-column field row */
+.form-row-2col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-4);
+}
+
+/* Sign-in link at bottom */
+.register-signin-link {
+  text-align: center;
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  margin-top: var(--space-2);
+}
+
+.register-signin-link a {
+  color: var(--color-primary);
+  font-weight: var(--font-medium);
+}
+
+.register-signin-link a:hover {
+  color: var(--color-primary-dark);
+}
+
+/* Field hint (validation messages) */
+.field-hint        { font-size: var(--text-xs); color: var(--color-text-muted); }
+.field-hint.error-hint { color: var(--color-error); }
+
+/* Responsive */
+@media (max-width: 1000px) {
+  .register-root   { flex-direction: column; }
+  .login-visual    { min-height: 220px; flex: none; }
+  .register-panel  { flex: 1; }
+  .form-row-2col   { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 480px) {
+  .register-panel  { padding: var(--space-6) var(--space-4) !important; }
+  .form-row-2col   { grid-template-columns: 1fr; }
+}

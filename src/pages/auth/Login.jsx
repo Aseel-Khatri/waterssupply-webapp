@@ -3,106 +3,49 @@
 // ============================================================
 
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import { login } from '../../services/api';
 import './Login.css';
 
-// ── Icons (inline SVG to avoid extra deps at this stage) ──
-const IconUser = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-    <circle cx="12" cy="7" r="4"/>
-  </svg>
-);
-
-const IconLock = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
-    <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-  </svg>
-);
-
-const IconEye = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-    <circle cx="12" cy="12" r="3"/>
-  </svg>
-);
-
-const IconEyeOff = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/>
-    <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/>
-    <line x1="1" y1="1" x2="23" y2="23"/>
-  </svg>
-);
-
-const IconCheck = () => (
-  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-    <polyline points="20 6 9 17 4 12"/>
-  </svg>
-);
-
-const IconAlert = () => (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{flexShrink:0, marginTop:'2px'}}>
-    <circle cx="12" cy="12" r="10"/>
-    <line x1="12" y1="8" x2="12" y2="12"/>
-    <line x1="12" y1="16" x2="12.01" y2="16"/>
-  </svg>
-);
-
-const IconDroplet = () => (
-  <svg width="52" height="52" viewBox="0 0 24 24" fill="rgba(255,255,255,0.9)" stroke="none">
-    <path d="M12 2C12 2 5 9.5 5 14a7 7 0 0 0 14 0c0-4.5-7-12-7-12z"/>
-  </svg>
-);
-
-const IconArrow = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-    <line x1="5" y1="12" x2="19" y2="12"/>
-    <polyline points="12 5 19 12 12 19"/>
-  </svg>
-);
-
-const IconAdmin = () => (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-  </svg>
-);
-
-const IconBike = () => (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <circle cx="5.5" cy="17.5" r="3.5"/><circle cx="18.5" cy="17.5" r="3.5"/>
-    <path d="M15 6a1 1 0 0 0-1-1h-2"/><path d="M8.5 17.5 L12 10 L16 14 L18.5 17.5"/>
-    <path d="M12 10 L14 6"/>
-  </svg>
-);
+// ── Icons ─────────────────────────────────────────────────
+const IconUser  = () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>;
+const IconLock  = () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>;
+const IconEye   = () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>;
+const IconEyeOff= () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>;
+const IconCheck = () => <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>;
+const IconAlert = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{flexShrink:0,marginTop:'2px'}}><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>;
+const IconArrow = () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>;
+const IconAdmin = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>;
+const IconBike  = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="5.5" cy="17.5" r="3.5"/><circle cx="18.5" cy="17.5" r="3.5"/><path d="M15 6a1 1 0 0 0-1-1h-2"/><path d="M8.5 17.5 L12 10 L16 14 L18.5 17.5"/><path d="M12 10 L14 6"/></svg>;
+const IconExpired = () => <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>;
 
 // ── Component ─────────────────────────────────────────────
 export default function LoginPage() {
   const navigate   = useNavigate();
   const { signIn } = useAuth();
 
-  const [username,    setUsername]    = useState('');
+  const [identifier,  setIdentifier]  = useState('');
   const [password,    setPassword]    = useState('');
   const [showPass,    setShowPass]    = useState(false);
   const [remember,    setRemember]    = useState(false);
-  const [userType,    setUserType]    = useState(1); // 1=Admin, 2=Delivery Boy
+  const [userType,    setUserType]    = useState(1);   // 1=Admin, 2=Delivery Boy
   const [loading,     setLoading]     = useState(false);
   const [error,       setError]       = useState('');
+  const [expired,     setExpired]     = useState(false);
   const [fieldErrors, setFieldErrors] = useState({});
 
   const validate = () => {
     const errs = {};
-    if (!username.trim()) errs.username = true;
-    if (!password.trim()) errs.password = true;
+    if (!identifier.trim()) errs.identifier = true;
+    if (!password.trim())   errs.password   = true;
     return errs;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+    setExpired(false);
 
     const errs = validate();
     setFieldErrors(errs);
@@ -110,46 +53,71 @@ export default function LoginPage() {
 
     setLoading(true);
     try {
-      const res = await login({ username, password, userTypeId: userType });
+      const user = await login({ identifier, password, userType });
 
-      // Persist if remember me checked
-      if (!remember) {
-        // Use sessionStorage for non-persistent session
-        sessionStorage.setItem('auth_token', res.data?.token || res.token);
-      }
+      // Persist token — sessionStorage if remember-me is off
+      const storage = remember ? localStorage : sessionStorage;
+      storage.setItem('auth_token', user.token);
 
-      signIn(res.data?.user || res.user, res.data?.token || res.token);
+      signIn(user, user.token, remember);
       navigate('/dashboard');
     } catch (err) {
-      setError(err.message || 'Invalid credentials. Please try again.');
+      if (err.code === 'ACCOUNT_EXPIRED') {
+        setExpired(true);
+      } else {
+        setError(err.message || 'Invalid credentials. Please try again.');
+      }
     } finally {
       setLoading(false);
     }
   };
 
   const clearFieldError = (field) => {
-    if (fieldErrors[field]) {
-      setFieldErrors(prev => ({ ...prev, [field]: false }));
-    }
+    if (fieldErrors[field]) setFieldErrors(prev => ({ ...prev, [field]: false }));
     if (error) setError('');
   };
+
+  // Label for the identifier field changes by role
+  const identifierLabel       = userType === 1 ? 'Phone Number'   : 'Username / Number';
+  const identifierPlaceholder = userType === 1 ? 'Enter phone number' : 'Enter username';
+
+  // ── Expired Dialog ───────────────────────────────────────
+  if (expired) {
+    return (
+      <div className="login-root">
+        <div className="login-panel" style={{flex:1, maxWidth:480, margin:'0 auto'}}>
+          <div className="login-logo">
+            <div className="login-logo-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M12 2C12 2 5 9.5 5 14a7 7 0 0 0 14 0c0-4.5-7-12-7-12z"/></svg>
+            </div>
+            <div className="login-logo-name">Water Supply<span>Management System</span></div>
+          </div>
+
+          <div className="expired-card">
+            <div className="expired-icon"><IconExpired /></div>
+            <h2 className="expired-title">Account Expired</h2>
+            <p className="expired-desc">
+              Your subscription has expired. Please renew your plan to continue using the system.
+            </p>
+            <button className="btn-login" onClick={() => setExpired(false)}>
+              Back to Login
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="login-root">
 
       {/* ── Left: Form Panel ───────────────────────── */}
       <div className="login-panel">
-        {/* Logo */}
         <div className="login-logo">
           <div className="login-logo-icon">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="white" stroke="none">
-              <path d="M12 2C12 2 5 9.5 5 14a7 7 0 0 0 14 0c0-4.5-7-12-7-12z"/>
-            </svg>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M12 2C12 2 5 9.5 5 14a7 7 0 0 0 14 0c0-4.5-7-12-7-12z"/></svg>
           </div>
-          <div className="login-logo-name">
-            Water Supply
-            <span>Management System</span>
-          </div>
+          <div className="login-logo-name">Water Supply<span>Management System</span></div>
         </div>
 
         <h1 className="login-heading">Welcome back</h1>
@@ -172,33 +140,33 @@ export default function LoginPage() {
               <button
                 type="button"
                 className={`role-option ${userType === 1 ? 'active' : ''}`}
-                onClick={() => setUserType(1)}
+                onClick={() => { setUserType(1); setIdentifier(''); setError(''); }}
               >
                 <IconAdmin /> Admin
               </button>
               <button
                 type="button"
                 className={`role-option ${userType === 2 ? 'active' : ''}`}
-                onClick={() => setUserType(2)}
+                onClick={() => { setUserType(2); setIdentifier(''); setError(''); }}
               >
                 <IconBike /> Delivery Boy
               </button>
             </div>
           </div>
 
-          {/* Username */}
+          {/* Identifier — phone or username depending on role */}
           <div className="form-group">
-            <label htmlFor="username" className="form-label">Username / Number</label>
+            <label htmlFor="identifier" className="form-label">{identifierLabel}</label>
             <div className="input-wrapper">
               <span className="input-icon"><IconUser /></span>
               <input
-                id="username"
-                type="text"
-                className={`form-input ${fieldErrors.username ? 'error' : ''}`}
-                placeholder="Enter your username"
-                value={username}
-                onChange={e => { setUsername(e.target.value); clearFieldError('username'); }}
-                autoComplete="username"
+                id="identifier"
+                type={userType === 1 ? 'tel' : 'text'}
+                className={`form-input ${fieldErrors.identifier ? 'error' : ''}`}
+                placeholder={identifierPlaceholder}
+                value={identifier}
+                onChange={e => { setIdentifier(e.target.value); clearFieldError('identifier'); }}
+                autoComplete={userType === 1 ? 'tel' : 'username'}
                 autoFocus
               />
             </div>
@@ -234,27 +202,24 @@ export default function LoginPage() {
           {/* Remember + Forgot */}
           <div className="form-row">
             <label className="checkbox-label">
-              <input
-                type="checkbox"
-                checked={remember}
-                onChange={e => setRemember(e.target.checked)}
-              />
-              <span className="custom-checkbox">
-                <IconCheck />
-              </span>
+              <input type="checkbox" checked={remember} onChange={e => setRemember(e.target.checked)} />
+              <span className="custom-checkbox"><IconCheck /></span>
               Remember me
             </label>
-            <a href="/forgot-password" className="forgot-link">Forgot password?</a>
+            <Link to="/forgot-password" className="forgot-link">Forgot password?</Link>
           </div>
 
           {/* Submit */}
           <button type="submit" className="btn-login" disabled={loading}>
-            {loading ? (
-              <><span className="spinner" /> Signing in…</>
-            ) : (
-              <>Sign In <IconArrow /></>
-            )}
+            {loading
+              ? <><span className="spinner" /> Signing in…</>
+              : <>Sign In <IconArrow /></>
+            }
           </button>
+
+          <p className="register-prompt">
+            Don't have an account? <Link to="/register">Create one</Link>
+          </p>
 
         </form>
       </div>
@@ -264,10 +229,11 @@ export default function LoginPage() {
         <div className="orb orb-1" />
         <div className="orb orb-2" />
         <div className="orb orb-3" />
-
         <div className="visual-content">
           <div className="visual-icon-wrap">
-            <IconDroplet />
+            <svg width="52" height="52" viewBox="0 0 24 24" fill="rgba(255,255,255,0.9)">
+              <path d="M12 2C12 2 5 9.5 5 14a7 7 0 0 0 14 0c0-4.5-7-12-7-12z"/>
+            </svg>
           </div>
           <h2 className="visual-title">Water Supply<br />Management</h2>
           <p className="visual-desc">
@@ -275,7 +241,6 @@ export default function LoginPage() {
             track counter sales, and generate<br />
             reports — all in one place.
           </p>
-
           <div className="visual-stats">
             <div className="stat-item">
               <div className="stat-value">Live</div>
