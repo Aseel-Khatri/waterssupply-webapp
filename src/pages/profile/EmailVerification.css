@@ -1,0 +1,145 @@
+/* ============================================================
+   WATER SUPPLY ADMIN — Email Verification
+   ============================================================ */
+
+@import '../../styles/variables.css';
+
+.ev-page {
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-6) var(--space-4);
+}
+
+.ev-card {
+  background: var(--color-surface);
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-10) var(--space-8);
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--space-4);
+  position: relative;
+  box-shadow: var(--shadow-md);
+}
+
+.ev-back {
+  position: absolute;
+  top: var(--space-5);
+  left: var(--space-5);
+  width: 34px; height: 34px;
+  display: flex; align-items: center; justify-content: center;
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-bg);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: border-color var(--transition-fast), color var(--transition-fast);
+}
+.ev-back:hover { border-color: var(--color-primary); color: var(--color-primary); }
+
+.ev-icon-wrap {
+  width: 64px; height: 64px;
+  border-radius: 50%;
+  background: var(--color-primary-light);
+  border: 1.5px solid rgba(13,110,253,0.15);
+  color: var(--color-primary);
+  display: flex; align-items: center; justify-content: center;
+}
+
+.ev-icon-wrap.verified {
+  background: #ECFDF5;
+  border-color: rgba(16,185,129,0.2);
+  color: var(--color-success);
+}
+
+.ev-title {
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  font-weight: var(--font-bold);
+  color: var(--color-text-primary);
+}
+
+.ev-sub {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  line-height: 1.6;
+  max-width: 300px;
+}
+
+.ev-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  text-align: left;
+}
+
+.ev-error {
+  display: flex; align-items: center; gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-error-bg);
+  border: 1px solid rgba(239,68,68,0.2);
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm); color: #B91C1C;
+}
+
+.ev-input-wrap {
+  position: relative; display: flex; align-items: center;
+}
+.ev-input-icon {
+  position: absolute; left: 13px; color: var(--color-text-muted);
+  display: flex; pointer-events: none; z-index: 1;
+  transition: color var(--transition-fast);
+}
+.ev-input {
+  width: 100%; height: 48px; padding: 0 var(--space-4) 0 42px;
+  border: 1.5px solid var(--color-border); border-radius: var(--radius-md);
+  font-size: var(--text-sm); font-family: var(--font-sans);
+  color: var(--color-text-primary); background: var(--color-bg); outline: none;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+.ev-input:focus { border-color: var(--color-primary); background: var(--color-surface); box-shadow: 0 0 0 3px rgba(13,110,253,0.08); }
+.ev-input:focus ~ .ev-input-icon, .ev-input-wrap:focus-within .ev-input-icon { color: var(--color-primary); }
+
+.ev-email-chip {
+  display: flex; align-items: center; gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-bg);
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm); color: var(--color-text-secondary);
+}
+
+.ev-btn {
+  width: 100%; height: 50px;
+  display: flex; align-items: center; justify-content: center; gap: var(--space-2);
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-mid));
+  color: white; border: none; border-radius: var(--radius-md);
+  font-size: var(--text-base); font-weight: var(--font-semibold); font-family: var(--font-sans);
+  cursor: pointer; box-shadow: 0 4px 14px rgba(13,110,253,0.3);
+  transition: all var(--transition-normal);
+}
+.ev-btn:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(13,110,253,0.4); }
+.ev-btn:disabled { opacity: 0.65; cursor: not-allowed; }
+
+.ev-spinner {
+  width: 18px; height: 18px;
+  border: 2px solid rgba(255,255,255,0.3); border-top-color: white;
+  border-radius: 50%; animation: spin 0.7s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.ev-back-link {
+  display: flex; align-items: center; gap: var(--space-2);
+  font-size: var(--text-sm); color: var(--color-text-muted);
+  font-weight: var(--font-medium); background: none; border: none;
+  cursor: pointer; margin-top: var(--space-2);
+  transition: color var(--transition-fast);
+}
+.ev-back-link:hover { color: var(--color-primary); }

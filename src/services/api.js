@@ -156,7 +156,7 @@ export async function deleteCounterSale({ sale_id, date_, sale_amount }) {
 // ── Delivery Boys ─────────────────────────────────────────
 
 export async function getDeliveryBoys() {
-  return request('get_delivery_boy', { method: 'GET' });
+  return request('get_delivery_boy', { method: 'GET'});
 }
 
 export async function addDeliveryBoy({ username, password }) {
@@ -310,6 +310,17 @@ export async function register({ username, email, password, companyName, phoneNu
  */
 export async function logout() {
   return request('logout', { method: 'POST' });
+}
+
+/**
+ * Update email (when user has no email set)
+ * POST /update_email
+ */
+export async function updateEmail(email) {
+  return request('update_email', {
+    method: 'POST',
+    body: JSON.stringify({ email }),
+  });
 }
 
 /**
