@@ -150,7 +150,7 @@ export async function deleteCounterSale({ sale_id, date_, sale_amount }) {
 // ── Delivery Boys ─────────────────────────────────────────
 
 export async function getDeliveryBoys() {
-  return request('get_delivery_boy', { method: 'POST', body: JSON.stringify({}) });
+  return request('get_delivery_boy', { method: 'GET'});
 }
 
 export async function addDeliveryBoy({ username, password }) {
