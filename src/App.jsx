@@ -24,6 +24,7 @@ import CustomerDetailPage   from './pages/customers/CustomerDetail';
 import DeliveryBoysPage     from './pages/delivery-boys/DeliveryBoys';
 import CounterSalesPage     from './pages/counter-sales/CounterSales';
 import ExpensesPage         from './pages/expenses/Expenses';
+import SupportPage          from './pages/support/Support';
 
 import './styles/global.css';
 
@@ -80,6 +81,7 @@ export default function App() {
             <Route path="/counter-sale"          element={<AdminRoute><CounterSalesPage /></AdminRoute>} />
             <Route path="/counter-sales"         element={<AdminRoute><CounterSalesPage /></AdminRoute>} />
             <Route path="/expenses"              element={<AdminRoute><ExpensesPage /></AdminRoute>} />
+            <Route path="/support"               element={<SupportPage />} />
             {/* Other pages to be added here */}
           </Route>
 
