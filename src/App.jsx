@@ -26,6 +26,7 @@ import CounterSalesPage     from './pages/counter-sales/CounterSales';
 import ExpensesPage         from './pages/expenses/Expenses';
 import SupportPage          from './pages/support/Support';
 import EmailVerificationPage from './pages/profile/EmailVerification';
+import SubscriptionPage      from './pages/subscription/Subscription';
 
 import './styles/global.css';
 
@@ -84,6 +85,7 @@ export default function App() {
             <Route path="/expenses"              element={<AdminRoute><ExpensesPage /></AdminRoute>} />
             <Route path="/support"               element={<SupportPage />} />
             <Route path="/verify-email"          element={<EmailVerificationPage />} />
+            <Route path="/subscription"          element={<SubscriptionPage />} />
             {/* Other pages to be added here */}
           </Route>
 

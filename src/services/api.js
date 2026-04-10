@@ -88,10 +88,16 @@ export async function login({ identifier, password, userType }) {
   return mapUser(payload);
 }
 
+// ── Subscription ─────────────────────────────────────────
+
+export async function getSubscriptionPackages() {
+  return request('get_subscription_packages', { method: 'GET' });
+}
+
 // ── Support ───────────────────────────────────────────────
 
 export async function getSupport() {
-  return request('get_support', { method: 'GET'});
+  return request('get_support', { method: 'GET' });
 }
 
 // ── Expenses ──────────────────────────────────────────────
@@ -156,7 +162,7 @@ export async function deleteCounterSale({ sale_id, date_, sale_amount }) {
 // ── Delivery Boys ─────────────────────────────────────────
 
 export async function getDeliveryBoys() {
-  return request('get_delivery_boy', { method: 'GET'});
+  return request('get_delivery_boy', { method: 'GET' });
 }
 
 export async function addDeliveryBoy({ username, password }) {
