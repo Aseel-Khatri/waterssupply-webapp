@@ -369,3 +369,10 @@ export async function resetPassword({ email, otp, password, passwordConfirmation
     }),
   });
 }
+
+
+// ── Profile ───────────────────────────────────────────────
+
+export async function getUserDetails() {
+  return request('get_user_details', { method: 'GET' });
+}
