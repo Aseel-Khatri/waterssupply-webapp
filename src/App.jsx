@@ -47,7 +47,7 @@ function AdminRoute({ children }) {
 export default function App() {
   return (
     <AuthProvider>
-      <BrowserRouter>
+      <BrowserRouter basename="/web-app-new">
         <Routes>
 
           {/* ── Public routes ─────────────────────────── */}
