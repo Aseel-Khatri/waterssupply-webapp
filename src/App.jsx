@@ -26,6 +26,7 @@ import CounterSalesPage     from './pages/counter-sales/CounterSales';
 import ExpensesPage         from './pages/expenses/Expenses';
 import SupportPage          from './pages/support/Support';
 import EmailVerificationPage from './pages/profile/EmailVerification';
+import PlantPage          from './pages/plant/Plant';
 import SubscriptionPage     from './pages/subscription/Subscription';
 import ProfilePage          from './pages/profile/Profile';
 
@@ -47,7 +48,7 @@ function AdminRoute({ children }) {
 export default function App() {
   return (
     <AuthProvider>
-      <BrowserRouter basename="/web-app-new">
+      <BrowserRouter>
         <Routes>
 
           {/* ── Public routes ─────────────────────────── */}
@@ -71,6 +72,7 @@ export default function App() {
             <Route path="/delivery-boys/add"  element={<AdminRoute><DeliveryBoysPage /></AdminRoute>} />
             <Route path="/counter-sale"       element={<AdminRoute><CounterSalesPage /></AdminRoute>} />
             <Route path="/counter-sales"      element={<AdminRoute><CounterSalesPage /></AdminRoute>} />
+            <Route path="/plant"             element={<AdminRoute><PlantPage /></AdminRoute>} />
             <Route path="/expenses"           element={<AdminRoute><ExpensesPage /></AdminRoute>} />
 
             {/* All users */}

@@ -55,11 +55,8 @@ export default function LoginPage() {
     try {
       const user = await login({ identifier, password, userType });
 
-      // Persist token — sessionStorage if remember-me is off
-      const storage = remember ? localStorage : sessionStorage;
-      storage.setItem('auth_token', user.token);
-
-      signIn(user, user.token, remember);
+      // Always persist to localStorage — sessionStorage dies on new tab/navigation
+      signIn(user, user.token, true);
       navigate('/dashboard');
     } catch (err) {
       if (err.code === 'ACCOUNT_EXPIRED') {

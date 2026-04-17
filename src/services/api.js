@@ -376,3 +376,29 @@ export async function resetPassword({ email, otp, password, passwordConfirmation
 export async function getUserDetails() {
   return request('get_user_details', { method: 'GET' });
 }
+
+
+// ── Water Plant ───────────────────────────────────────────
+
+export async function getAllPlants() {
+  return request('all_plant', { method: 'GET' });
+}
+
+export async function addPlant(formData) {
+  return request('add_plant', { method: 'POST', body: JSON.stringify(formData) });
+}
+
+export async function editPlant(formData) {
+  return request('edit_plant', { method: 'POST', body: JSON.stringify(formData) });
+}
+
+export async function deletePlant(id) {
+  return request('delete_plant', { method: 'POST', body: JSON.stringify({ id }) });
+}
+
+export async function submitPlantOrder({ plant_id, empty_rec, refil_rec, am_rec }) {
+  return request('plant_order', {
+    method: 'POST',
+    body: JSON.stringify({ plant_id, empty_rec, refil_rec, am_rec }),
+  });
+}
