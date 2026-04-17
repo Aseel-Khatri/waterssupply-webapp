@@ -44,7 +44,10 @@ function AdminRoute({ children }) {
   return user.userTypeId === 1 ? children : <Navigate to="/deliveries" replace />;
 }
 
-// ── Root App ──────────────────────────────────────────────
+function CatchAll() {
+  const { isAuthenticated } = useAuth();
+  return <Navigate to={isAuthenticated ? '/dashboard' : '/login'} replace />;
+}
 export default function App() {
   return (
     <AuthProvider>
@@ -84,7 +87,7 @@ export default function App() {
 
           </Route>
 
-          <Route path="*" element={<Navigate to="/login" replace />} />
+          <Route path="*" element={<CatchAll />} />
 
         </Routes>
       </BrowserRouter>
