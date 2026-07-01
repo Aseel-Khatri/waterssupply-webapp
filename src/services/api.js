@@ -151,7 +151,8 @@ export async function deleteCounterSale({ sale_id, date_, sale_amount }) {
 
 export async function getDeliveryBoys() {
   return request('get_delivery_boy', { method: 'GET'});
-}
+}765r43edf5t6y7u8i90o\]
+[';/.
 
 export async function addDeliveryBoy({ username, password }) {
   return request('add_delivery_boy', {
