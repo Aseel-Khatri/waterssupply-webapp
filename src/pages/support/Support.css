@@ -1,0 +1,125 @@
+/* ============================================================
+   WATER SUPPLY ADMIN — Support / Contact
+   ============================================================ */
+
+@import '../../styles/variables.css';
+
+.sup-page {
+  max-width: 640px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+/* ── Header ──────────────────────────────────────────────── */
+.sup-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.sup-header-icon {
+  width: 48px; height: 48px;
+  background: var(--color-primary-light);
+  color: var(--color-primary);
+  border-radius: var(--radius-lg);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+
+/* ── States ──────────────────────────────────────────────── */
+.sup-state {
+  display: flex; flex-direction: column; align-items: center;
+  justify-content: center; gap: var(--space-3);
+  padding: 60px var(--space-6);
+  color: var(--color-text-muted); font-size: var(--text-sm);
+}
+.sup-state.error { color: var(--color-error); }
+.spinner-ring {
+  width: 28px; height: 28px;
+  border: 3px solid var(--color-border); border-top-color: var(--color-primary);
+  border-radius: 50%; animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.btn-retry { padding: 6px var(--space-4); background: var(--color-primary); color: white; border: none; border-radius: var(--radius-md); font-size: var(--text-sm); cursor: pointer; }
+
+/* ── Cards list ──────────────────────────────────────────── */
+.sup-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+/* ── Support card ────────────────────────────────────────── */
+.support-card {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  background: var(--color-surface);
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4) var(--space-5);
+  text-decoration: none;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast), transform var(--transition-fast);
+}
+
+.support-card:hover {
+  border-color: var(--sc-color, var(--color-primary));
+  box-shadow: 0 4px 20px rgba(0,0,0,0.07);
+  transform: translateY(-2px);
+}
+
+/* Icon circle */
+.support-card-icon {
+  width: 48px; height: 48px; flex-shrink: 0;
+  border-radius: var(--radius-md);
+  background: var(--sc-bg);
+  color: var(--sc-color);
+  display: flex; align-items: center; justify-content: center;
+}
+
+/* Info */
+.support-card-info {
+  flex: 1;
+  min-width: 0;
+  display: flex; flex-direction: column; gap: 3px;
+}
+
+.support-card-title {
+  font-size: var(--text-sm); font-weight: var(--font-semibold);
+  color: var(--color-text-primary);
+}
+
+.support-card-value {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+
+/* Right side */
+.support-card-right {
+  display: flex; flex-direction: column; align-items: flex-end; gap: var(--space-2);
+  flex-shrink: 0;
+}
+
+.support-badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 3px 8px;
+  border-radius: var(--radius-full);
+  font-size: 11px; font-weight: var(--font-semibold);
+}
+
+.support-badge.whatsapp {
+  background: #DCFCE7; color: #15803D;
+}
+
+.support-action-label {
+  display: flex; align-items: center; gap: 4px;
+  font-size: var(--text-xs); font-weight: var(--font-semibold);
+}
+
+/* ── Responsive ──────────────────────────────────────────── */
+@media (max-width: 480px) {
+  .support-card { flex-wrap: wrap; }
+  .support-card-right { flex-direction: row; align-items: center; }
+}

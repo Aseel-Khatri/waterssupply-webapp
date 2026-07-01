@@ -88,6 +88,18 @@ export async function login({ identifier, password, userType }) {
   return mapUser(payload);
 }
 
+// ── Subscription ─────────────────────────────────────────
+
+export async function getSubscriptionPackages() {
+  return request('get_subscription_packages', { method: 'GET' });
+}
+
+// ── Support ───────────────────────────────────────────────
+
+export async function getSupport() {
+  return request('get_support', { method: 'GET' });
+}
+
 // ── Expenses ──────────────────────────────────────────────
 
 export async function getExpenses({ from_date, to_date, page }) {
@@ -150,9 +162,8 @@ export async function deleteCounterSale({ sale_id, date_, sale_amount }) {
 // ── Delivery Boys ─────────────────────────────────────────
 
 export async function getDeliveryBoys() {
-  return request('get_delivery_boy', { method: 'GET'});
-}765r43edf5t6y7u8i90o\]
-[';/.
+  return request('get_delivery_boy', { method: 'GET' });
+}
 
 export async function addDeliveryBoy({ username, password }) {
   return request('add_delivery_boy', {
@@ -308,6 +319,17 @@ export async function logout() {
 }
 
 /**
+ * Update email (when user has no email set)
+ * POST /update_email
+ */
+export async function updateEmail(email) {
+  return request('update_email', {
+    method: 'POST',
+    body: JSON.stringify({ email }),
+  });
+}
+
+/**
  * Forgot password — triggers OTP email
  * POST /forgot_password
  * Body: { email }
@@ -345,5 +367,38 @@ export async function resetPassword({ email, otp, password, passwordConfirmation
       password,
       password_confirmation: passwordConfirmation,
     }),
+  });
+}
+
+
+// ── Profile ───────────────────────────────────────────────
+
+export async function getUserDetails() {
+  return request('get_user_details', { method: 'GET' });
+}
+
+
+// ── Water Plant ───────────────────────────────────────────
+
+export async function getAllPlants() {
+  return request('all_plant', { method: 'GET' });
+}
+
+export async function addPlant(formData) {
+  return request('add_plant', { method: 'POST', body: JSON.stringify(formData) });
+}
+
+export async function editPlant(formData) {
+  return request('edit_plant', { method: 'POST', body: JSON.stringify(formData) });
+}
+
+export async function deletePlant(id) {
+  return request('delete_plant', { method: 'POST', body: JSON.stringify({ id }) });
+}
+
+export async function submitPlantOrder({ plant_id, empty_rec, refil_rec, am_rec }) {
+  return request('plant_order', {
+    method: 'POST',
+    body: JSON.stringify({ plant_id, empty_rec, refil_rec, am_rec }),
   });
 }

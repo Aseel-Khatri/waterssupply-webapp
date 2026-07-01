@@ -21,11 +21,11 @@ const IcArrow    = () => <svg width="14" height="14" viewBox="0 0 24 24" fill="n
 const IcDrop     = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C12 2 5 9.5 5 14a7 7 0 0 0 14 0c0-4.5-7-12-7-12z"/></svg>;
 
 const STAT_CARDS = [
-  { key: 'todayDeliveries', label: 'Today Deliveries', icon: <IcTruck />,    color: '#3B82F6', bg: '#EFF6FF', to: '/deliveries' },
-  { key: 'activeCustomers', label: 'Active Customers', icon: <IcUsers />,    color: '#10B981', bg: '#ECFDF5', to: '/customers/active' },
-  { key: 'inactiveCustomers', label: 'In-Active Customers', icon: <IcUserX />, color: '#F59E0B', bg: '#FFFBEB', to: '/customers/inactive' },
-  { key: 'deliveryBoys',    label: 'Delivery Boys',   icon: <IcBike />,     color: '#8B5CF6', bg: '#F5F3FF', to: '/delivery-boys' },
-  { key: 'counterSales',    label: 'Counter Sales',   icon: <IcBag />,      color: '#EF4444', bg: '#FEF2F2', to: '/counter-sales' },
+  { key: 'today_deliveries',   label: 'Today Deliveries',    icon: <IcTruck />, color: '#3B82F6', bg: '#EFF6FF', to: '/deliveries' },
+  { key: 'active_customers',   label: 'Active Customers',    icon: <IcUsers />, color: '#10B981', bg: '#ECFDF5', to: '/customers/active' },
+  { key: 'inactive_customers', label: 'In-Active Customers', icon: <IcUserX />, color: '#F59E0B', bg: '#FFFBEB', to: '/customers/inactive' },
+  { key: 'delivery_boys',      label: 'Delivery Boys',       icon: <IcBike />,  color: '#8B5CF6', bg: '#F5F3FF', to: '/delivery-boys' },
+  { key: 'counter_sales',      label: 'Counter Sales',       icon: <IcBag />,   color: '#EF4444', bg: '#FEF2F2', to: '/counter-sales' },
 ];
 
 const QUICK_LINKS = [

@@ -19,10 +19,23 @@ export default function Topbar({ onMenuClick }) {
       })
     : null;
 
-  const isExpired = user?.expiryDate && new Date(user.expiryDate) < new Date();
+  const isExpired      = user?.expiryDate && new Date(user.expiryDate) < new Date();
+  const emailMissing   = !user?.email?.trim();
+  const emailUnverified= user?.email?.trim() && !user?.isEmailVerified;
+  const showEmailBanner= emailMissing || emailUnverified;
 
   return (
-    <header className="topbar">
+    <>
+      {showEmailBanner && (
+        <a href="/verify-email" className="topbar-email-banner">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          {emailMissing
+            ? 'Email not added — tap to add and verify'
+            : `${user.email} is not verified — tap to verify`
+          }
+        </a>
+      )}
+      <header className="topbar">
       {/* Mobile menu toggle */}
       <button className="topbar-menu-btn" onClick={onMenuClick} aria-label="Open menu">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -43,5 +56,6 @@ export default function Topbar({ onMenuClick }) {
         </span>
       </div>
     </header>
+    </>
   );
 }

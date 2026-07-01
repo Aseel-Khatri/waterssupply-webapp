@@ -5,6 +5,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { verifyOtp, forgotPassword } from '../../services/api';
+import { useAuth } from '../../hooks/useAuth';
 import './ForgotPassword.css';
 
 const IconArrow  = () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>;
@@ -16,6 +17,7 @@ const OTP_LENGTH = 6;
 export default function OTPVerifyPage() {
   const navigate     = useNavigate();
   const location     = useLocation();
+  const { user, signIn } = useAuth();
   const email        = location.state?.email   || '';
   const purpose      = location.state?.purpose || 'forgot_password';
 
@@ -89,7 +91,14 @@ export default function OTPVerifyPage() {
     setLoading(true);
     try {
       await verifyOtp({ email, otp, purpose });
-      navigate('/reset-password', { state: { email, otp } });
+      if (purpose === 'email_verification') {
+        // Mark user as email verified in auth context
+        const token = localStorage.getItem('auth_token') || sessionStorage.getItem('auth_token');
+        signIn({ ...user, isEmailVerified: true }, token, !!localStorage.getItem('auth_token'));
+        navigate('/dashboard', { replace: true });
+      } else {
+        navigate('/reset-password', { state: { email, otp } });
+      }
     } catch (err) {
       setError(err.message || 'Invalid or expired code. Please try again.');
     } finally {
