@@ -19,10 +19,18 @@ const IcCalendar= () => <svg width="13" height="13" viewBox="0 0 24 24" fill="no
 const IcFilter  = () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>;
 
 // ── Helpers ───────────────────────────────────────────────
-function parseAddress(raw) {
-  if (!raw) return '—';
-  try { const p = JSON.parse(raw); if (p?.address) return p.address; } catch {}
-  return raw;
+function parseAddressData(raw) {
+  if (!raw) return { text: '—', coords: null };
+  try {
+    const p = typeof raw === 'string' ? JSON.parse(raw) : raw;
+    if (p && typeof p === 'object') {
+      return {
+        text: p.address || `${p.lat}, ${p.lng}`,
+        coords: p.type === 'latlng' ? { lat: p.lat, lng: p.lng } : null,
+      };
+    }
+  } catch {}
+  return { text: raw, coords: null };
 }
 function fmt(v) {
   const n = Number(v);
@@ -141,7 +149,25 @@ export default function CustomerDetailPage() {
           <h1 className="cd-name">{name}</h1>
           <div className="cd-profile-meta">
             {details.number  && <span><IcPhone />  {details.number}</span>}
-            {details.address && <span><IcMapPin />  {parseAddress(details.address)}</span>}
+            {details.address && (() => {
+              const { text, coords } = parseAddressData(details.address);
+              return (
+                <span className="cd-address-wrap">
+                  <span className="cd-address-row"><IcMapPin /> {text}</span>
+                  {coords && (
+                    <a
+                      className="cd-maps-link"
+                      href={`https://www.google.com/maps?q=${coords.lat},${coords.lng}`}
+                      target="_blank" rel="noopener noreferrer"
+                    >
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                      Open in Google Maps
+                      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                    </a>
+                  )}
+                </span>
+              );
+            })()}
             {details.rdatee  && <span><IcCalendar /> Since {details.rdatee}</span>}
           </div>
         </div>

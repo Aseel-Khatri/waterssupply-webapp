@@ -1,0 +1,141 @@
+/* ============================================================
+   WATER SUPPLY ADMIN — Map Picker Modal
+   ============================================================ */
+
+@import '../../styles/variables.css';
+
+.mp-backdrop {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.55); z-index: 300;
+  display: flex; align-items: center; justify-content: center;
+  padding: var(--space-4);
+  animation: mpFadeIn 0.15s ease;
+}
+@keyframes mpFadeIn { from { opacity:0; } to { opacity:1; } }
+
+.mp-modal {
+  background: var(--color-surface);
+  border-radius: var(--radius-xl);
+  width: 100%; max-width: 640px;
+  box-shadow: var(--shadow-xl);
+  overflow: hidden;
+  display: flex; flex-direction: column;
+  max-height: 90vh;
+  animation: mpSlideUp 0.2s ease;
+}
+@keyframes mpSlideUp {
+  from { opacity:0; transform:translateY(20px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+
+/* ── Header ──────────────────────────────────────────────── */
+.mp-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: var(--space-4) var(--space-5);
+  border-bottom: 1px solid var(--color-border);
+}
+.mp-header-left { display: flex; align-items: center; gap: var(--space-3); }
+.mp-header-icon {
+  width: 38px; height: 38px;
+  background: var(--color-primary-light); color: var(--color-primary);
+  border-radius: var(--radius-md);
+  display: flex; align-items: center; justify-content: center;
+}
+.mp-title { font-family: var(--font-display); font-size: var(--text-base); font-weight: var(--font-bold); color: var(--color-text-primary); }
+.mp-sub   { font-size: var(--text-xs); color: var(--color-text-muted); margin-top: 1px; }
+.mp-close {
+  width: 32px; height: 32px; background: var(--color-bg); border: none;
+  border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center;
+  color: var(--color-text-muted); cursor: pointer;
+  transition: background var(--transition-fast);
+}
+.mp-close:hover { background: var(--color-border); color: var(--color-text-primary); }
+
+/* ── Map ─────────────────────────────────────────────────── */
+.mp-map-container {
+  position: relative; width: 100%; height: 340px;
+  background: var(--color-bg);
+}
+
+.mp-map { width: 100%; height: 100%; z-index: 1; }
+
+.mp-loading {
+  position: absolute; inset: 0; z-index: 2;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: var(--space-3);
+  background: var(--color-bg);
+  color: var(--color-text-muted); font-size: var(--text-sm);
+}
+
+.spinner-ring {
+  width: 28px; height: 28px;
+  border: 3px solid var(--color-border); border-top-color: var(--color-primary);
+  border-radius: 50%; animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Locate button */
+.mp-locate-btn {
+  position: absolute; bottom: 12px; right: 12px; z-index: 10;
+  width: 40px; height: 40px;
+  background: var(--color-surface);
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--color-primary); cursor: pointer;
+  transition: background var(--transition-fast), border-color var(--transition-fast);
+}
+.mp-locate-btn:hover:not(:disabled) { background: var(--color-primary-light); border-color: var(--color-primary); }
+.mp-locate-btn:disabled { opacity: 0.5; cursor: wait; }
+
+.spinner-xs {
+  width: 16px; height: 16px;
+  border: 2px solid var(--color-border); border-top-color: var(--color-primary);
+  border-radius: 50%; animation: spin 0.7s linear infinite;
+}
+
+/* ── Footer ──────────────────────────────────────────────── */
+.mp-footer {
+  padding: var(--space-4) var(--space-5);
+  border-top: 1px solid var(--color-border);
+  display: flex; flex-direction: column; gap: var(--space-3);
+}
+
+.mp-perm-error {
+  padding: var(--space-2) var(--space-3);
+  background: #FEF2F2; border: 1px solid rgba(239,68,68,0.15);
+  border-radius: var(--radius-md);
+  font-size: var(--text-xs); color: #B91C1C;
+}
+
+.mp-address-bar {
+  display: flex; align-items: flex-start; gap: var(--space-3);
+  color: var(--color-text-muted);
+}
+
+.mp-address {
+  font-size: var(--text-sm); color: var(--color-text-primary);
+  line-height: 1.4; flex: 1;
+}
+.mp-address.loading { color: var(--color-text-muted); font-style: italic; }
+
+.mp-coords {
+  font-size: var(--text-xs); color: var(--color-text-muted);
+  font-family: var(--font-mono, monospace);
+}
+
+.mp-confirm-btn {
+  width: 100%; height: 44px;
+  background: var(--color-primary); color: white; border: none;
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm); font-weight: var(--font-semibold); font-family: var(--font-sans);
+  cursor: pointer;
+  transition: background var(--transition-fast);
+}
+.mp-confirm-btn:hover:not(:disabled) { background: var(--color-primary-dark); }
+.mp-confirm-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+@media (max-width: 600px) {
+  .mp-map-container { height: 280px; }
+  .mp-modal { max-height: 95vh; }
+}
