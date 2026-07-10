@@ -27,6 +27,7 @@ export default function RegisterPage() {
     email:          '',
     password:       '',
     companyName:    '',
+    countryCode:    '+92',
     phoneNumber:    '',
     companyAddress: '',
   });
@@ -47,9 +48,11 @@ export default function RegisterPage() {
     if (!form.fullName.trim())       errs.fullName       = 'Full name is required';
     if (!form.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email))
                                      errs.email          = 'Valid email is required';
-    if (form.password.length < 8)    errs.password       = 'Minimum 8 characters';
+    if (form.password.length < 6)    errs.password       = 'Minimum 6 characters';
     if (!form.companyName.trim())    errs.companyName    = 'Company name is required';
     if (!form.phoneNumber.trim())    errs.phoneNumber    = 'Phone number is required';
+    else if (!/^\d{7,12}$/.test(form.phoneNumber.replace(/^0/, '')))
+                                     errs.phoneNumber    = 'Enter a valid phone number';
     if (!form.companyAddress.trim()) errs.companyAddress = 'Address is required';
     return errs;
   };
@@ -68,7 +71,7 @@ export default function RegisterPage() {
         email:          form.email,
         password:       form.password,
         companyName:    form.companyName,
-        phoneNumber:    form.phoneNumber,
+        phoneNumber:    `${form.countryCode}${form.phoneNumber.replace(/^0/, '')}`,
         address:        form.companyAddress,
       });
       setSuccess(true);
@@ -152,27 +155,41 @@ export default function RegisterPage() {
             </div>
           )}
 
-          {/* Two-column row: Full Name + Phone */}
-          <div className="form-row-2col">
-            <div className="form-group">
-              <label className="form-label">Full Name</label>
-              <div className="input-wrapper">
-                <span className="input-icon"><IconUser /></span>
-                <input type="text" className={`form-input ${fieldErrors.fullName ? 'error' : ''}`}
-                  placeholder="Your full name" value={form.fullName} onChange={set('fullName')} autoFocus />
-              </div>
-              {fieldErrors.fullName && <span className="field-hint error-hint">{fieldErrors.fullName}</span>}
+          {/* Full Name — full width */}
+          <div className="form-group">
+            <label className="form-label">Full Name</label>
+            <div className="input-wrapper">
+              <span className="input-icon"><IconUser /></span>
+              <input type="text" className={`form-input ${fieldErrors.fullName ? 'error' : ''}`}
+                placeholder="Your full name" value={form.fullName} onChange={set('fullName')} autoFocus />
             </div>
+            {fieldErrors.fullName && <span className="field-hint error-hint">{fieldErrors.fullName}</span>}
+          </div>
 
-            <div className="form-group">
-              <label className="form-label">Phone Number</label>
-              <div className="input-wrapper">
+          {/* Phone Number — full width, country code gets room to breathe */}
+          <div className="form-group">
+            <label className="form-label">Phone Number</label>
+            <div className="phone-input-row">
+              <select
+                className="country-code-select"
+                value={form.countryCode}
+                onChange={e => setForm(prev => ({ ...prev, countryCode: e.target.value }))}
+              >
+                <option value="+92">🇵🇰 +92</option>
+                <option value="+91">🇮🇳 +91</option>
+                <option value="+971">🇦🇪 +971</option>
+                <option value="+966">🇸🇦 +966</option>
+                <option value="+1">🇺🇸 +1</option>
+                <option value="+44">🇬🇧 +44</option>
+              </select>
+              <div className="input-wrapper phone-input-wrapper">
                 <span className="input-icon"><IconPhone /></span>
                 <input type="tel" className={`form-input ${fieldErrors.phoneNumber ? 'error' : ''}`}
-                  placeholder="e.g. 03001234567" value={form.phoneNumber} onChange={set('phoneNumber')} />
+                  placeholder="3001234567" value={form.phoneNumber}
+                  onChange={e => { setForm(prev => ({ ...prev, phoneNumber: e.target.value.replace(/\D/g,'') })); setFieldErrors(prev => ({ ...prev, phoneNumber: '' })); setError(''); }} />
               </div>
-              {fieldErrors.phoneNumber && <span className="field-hint error-hint">{fieldErrors.phoneNumber}</span>}
             </div>
+            {fieldErrors.phoneNumber && <span className="field-hint error-hint">{fieldErrors.phoneNumber}</span>}
           </div>
 
           {/* Email */}
@@ -194,7 +211,7 @@ export default function RegisterPage() {
               <input
                 type={showPass ? 'text' : 'password'}
                 className={`form-input ${fieldErrors.password ? 'error' : ''}`}
-                placeholder="Minimum 8 characters"
+                placeholder="Minimum 6 characters"
                 value={form.password}
                 onChange={set('password')}
                 autoComplete="new-password"
@@ -236,6 +253,13 @@ export default function RegisterPage() {
               : <>Create Account <IconArrow /></>
             }
           </button>
+
+          <p className="register-privacy-note">
+            By creating an account, you agree to our{' '}
+            <a href="https://watersupply-soft.com/Privacy-Policy.html" target="_blank" rel="noopener noreferrer">
+              Privacy Policy
+            </a>
+          </p>
 
           <p className="register-signin-link">
             Already have an account? <Link to="/login">Sign in</Link>

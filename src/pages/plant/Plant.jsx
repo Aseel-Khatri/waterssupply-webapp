@@ -352,8 +352,8 @@ function PlantCard({ plant, onEdit, onOrder, onDelete }) {
         <div className="pl-stat-divider"/>
         <div className="pl-stat">
           <span className="pl-stat-label">Type</span>
-          <span className={`pl-type-badge ${plant.type == 1 ? 'can' : 'bottle'}`}>
-            {plant.type == 1 ? 'Can' : 'Bottle'}
+          <span className={`pl-type-badge ${plant.type == 1 ? 'can' : plant.type == 2 ? 'bottle' : 'other'}`}>
+            {plant.type == 1 ? 'Can' : plant.type == 2 ? 'Bottle' : 'Other'}
           </span>
         </div>
       </div>

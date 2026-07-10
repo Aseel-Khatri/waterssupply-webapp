@@ -38,6 +38,15 @@ const todayStr = () => {
   return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
 };
 
+// Default start date is tomorrow (not today) — starting a customer's
+// delivery cycle "today" was silently creating a same-day delivery
+// record, which then didn't surface correctly on the Today Delivery list.
+const tomorrowStr = () => {
+  const d = new Date();
+  d.setDate(d.getDate() + 1);
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+};
+
 // Parse address for pre-fill (could be JSON or plain text)
 function parseAddressForEdit(raw) {
   if (!raw) return '';
@@ -72,7 +81,7 @@ export default function CustomerRegisterPage() {
     bottleBalance: '',
     deliveryBoyId: editData?.delivery_boy_id?.toString() ?? '0',
     other:         editData?.other ?? '',
-    date:          editData?.datee ?? todayStr(),
+    date:          editData?.datee ?? tomorrowStr(),
   });
   const [supplyType,    setSupplyType]    = useState(editData?.type?.toString() ?? '');
   const [selectedDays,  setSelectedDays]  = useState(() => {
@@ -196,7 +205,7 @@ export default function CustomerRegisterPage() {
             {!isEdit && (
               <button className="btn-primary" onClick={() => {
                 setSuccess(false);
-                setForm({ firstName:'',lastName:'',phone:'',address:'',price:'',deposit:'',amountBalance:'',bottleBalance:'',deliveryBoyId:'0',other:'',date:todayStr()});
+                setForm({ firstName:'',lastName:'',phone:'',address:'',price:'',deposit:'',amountBalance:'',bottleBalance:'',deliveryBoyId:'0',other:'',date:tomorrowStr()});
                 setSupplyType('');
                 setSelectedDays([]);
               }}>
@@ -269,6 +278,7 @@ export default function CustomerRegisterPage() {
                 <input type="date" className="form-input"
                   value={form.date} onChange={set('date')} />
               </div>
+              {!isEdit && <span className="field-hint">Deliveries begin from this date</span>}
             </div>
           </div>
           <div className="form-group">

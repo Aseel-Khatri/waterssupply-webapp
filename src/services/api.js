@@ -396,9 +396,42 @@ export async function deletePlant(id) {
   return request('delete_plant', { method: 'POST', body: JSON.stringify({ id }) });
 }
 
-export async function submitPlantOrder({ plant_id, empty_rec, refil_rec, am_rec }) {
+export async function submitPlantOrder({ user_id, plant_id, empty_rec, refil_rec, am_rec }) {
+  const body = { plant_id, empty_rec, refil_rec, am_rec };
+  if (user_id) body.user_id = user_id;
   return request('plant_order', {
     method: 'POST',
-    body: JSON.stringify({ plant_id, empty_rec, refil_rec, am_rec }),
+    body: JSON.stringify(body),
+  });
+}
+
+
+// ── Regular Customer Delivery (routine deliveries) ─────────
+// NOT the Water Plant module — this is for everyday customer
+// bottle/can deliveries shown on the main Deliveries page.
+
+/**
+ * Record a delivery for a regular customer
+ * POST /save_bottle_data
+ * Body: { client_id, filled_deliver, empty_recieved, amount_recieved,
+ *         delivery_boy?, delivery_date?, delivery_time? }
+ */
+export async function saveBottleData({
+  client_id, filled_deliver, empty_recieved, amount_recieved,
+  delivery_boy, delivery_date, delivery_time,
+}) {
+  const body = {
+    client_id,
+    filled_deliver,
+    empty_recieved:  empty_recieved  || '0',
+    amount_recieved: amount_recieved || '0',
+  };
+  if (delivery_boy)  body.delivery_boy  = delivery_boy;
+  if (delivery_date) body.delivery_date = delivery_date;
+  if (delivery_time) body.delivery_time = delivery_time;
+
+  return request('save_bottle_data', {
+    method: 'POST',
+    body: JSON.stringify(body),
   });
 }

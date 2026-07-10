@@ -309,6 +309,7 @@
 
 .badge-type.can    { background: #E0F2FE; color: #0369A1; }
 .badge-type.bottle { background: #F0FDF4; color: #15803D; }
+.badge-type.other  { background: #F3F4F6; color: #374151; }
 
 .cust-phone {
   display: flex;
@@ -317,6 +318,7 @@
   font-size: var(--text-xs);
   color: var(--color-text-muted);
 }
+.badge-type.other  { background: #F3F4F6; color: #374151; }
 
 /* Action menu */
 .cust-menu-wrap { position: relative; flex-shrink: 0; }

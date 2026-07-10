@@ -3,6 +3,7 @@
 // Shows expiry date, today's date, company name
 // ============================================================
 
+import { Link } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import './Topbar.css';
 
@@ -20,20 +21,21 @@ export default function Topbar({ onMenuClick }) {
     : null;
 
   const isExpired      = user?.expiryDate && new Date(user.expiryDate) < new Date();
-  const emailMissing   = !user?.email?.trim();
-  const emailUnverified= user?.email?.trim() && !user?.isEmailVerified;
-  const showEmailBanner= emailMissing || emailUnverified;
+  const isAdmin         = user?.userTypeId === 1;
+  const emailMissing    = isAdmin && !user?.email?.trim();
+  const emailUnverified = isAdmin && user?.email?.trim() && !user?.isEmailVerified;
+  const showEmailBanner = emailMissing || emailUnverified;
 
   return (
     <>
       {showEmailBanner && (
-        <a href="/verify-email" className="topbar-email-banner">
+        <Link to="/verify-email" className="topbar-email-banner">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
           {emailMissing
             ? 'Email not added — tap to add and verify'
             : `${user.email} is not verified — tap to verify`
           }
-        </a>
+        </Link>
       )}
       <header className="topbar">
       {/* Mobile menu toggle */}

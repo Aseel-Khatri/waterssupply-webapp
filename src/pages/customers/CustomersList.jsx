@@ -47,10 +47,11 @@ function avatarColor(name) {
 
 // ── Delivery Days Dialog ──────────────────────────────────
 function DeliveryDaysDialog({ customer, onClose, onSave }) {
-  const existing = customer.days_of_giving
-    ? (Array.isArray(customer.days_of_giving)
-        ? customer.days_of_giving
-        : customer.days_of_giving.split(',').map(d => d.trim()))
+  const rawDays = customer.days_of_giving ?? customer.delivery_days ?? customer.days ?? null;
+  const existing = rawDays
+    ? (Array.isArray(rawDays)
+        ? rawDays
+        : String(rawDays).split(',').map(d => d.trim()).filter(Boolean))
     : [];
 
   const [selected, setSelected] = useState(existing);
@@ -162,8 +163,8 @@ function CustomerCard({ customer, status, onEdit, onToggleStatus, onDaysDialog }
           <span className="cust-address">{address}</span>
         </div>
         <div className="cust-meta-row">
-          <span className={`badge-type ${customer.type == 1 ? 'can' : 'bottle'}`}>
-            {customer.type == 1 ? 'Can' : 'Bottle'}
+          <span className={`badge-type ${customer.type == 1 ? 'can' : customer.type == 2 ? 'bottle' : 'other'}`}>
+            {customer.type == 1 ? 'Can' : customer.type == 2 ? 'Bottle' : 'Other'}
           </span>
           {customer.number && (
             <span className="cust-phone"><IcPhone /> {customer.number}</span>

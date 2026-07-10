@@ -38,7 +38,7 @@ const firstOfMonth = () => {
 // ── Expense Form Modal ────────────────────────────────────
 function ExpenseFormModal({ expense, onClose, onSaved }) {
   const isEdit = !!expense;
-  const [name,    setName]    = useState(expense?.exp_name ?? expense?.name ?? '');
+  const [name,    setName]    = useState(expense?.exp_name ?? expense?.name ?? expense?.title ?? expense?.expense_name ?? '');
   const [price,   setPrice]   = useState(expense?.price?.toString() ?? '');
   const [date,    setDate]    = useState('');
   const [errors,  setErrors]  = useState({});
@@ -158,7 +158,7 @@ function DeleteConfirm({ expense, onConfirm, onCancel, loading }) {
         <div className="confirm-icon-wrap"><IcTrash /></div>
         <h3 className="confirm-title">Delete Expense?</h3>
         <p className="confirm-msg">
-          Remove <strong>"{expense.exp_name || expense.name}"</strong> of{' '}
+          Remove <strong>"{expense.exp_name || expense.name || expense.title || expense.expense_name}"</strong> of{' '}
           <strong>₨ {Number(expense.price).toLocaleString()}</strong>?
           This cannot be undone.
         </p>
@@ -290,7 +290,7 @@ export default function ExpensesPage() {
               <div className="exp-card-left">
                 <div className="exp-card-num">{i + 1}</div>
                 <div className="exp-card-info">
-                  <span className="exp-card-name">{exp.exp_name || exp.name}</span>
+                  <span className="exp-card-name">{exp.exp_name || exp.name || exp.title || exp.expense_name}</span>
                   <span className="exp-card-date">{fmtDate(exp.datee)}</span>
                 </div>
               </div>
