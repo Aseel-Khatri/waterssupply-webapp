@@ -339,7 +339,7 @@
 /* ── Right Illustration Panel ───────────────────────────── */
 .login-visual {
   flex: 1;
-  background: linear-gradient(155deg, #0B1F3A 0%, #0D3A6E 50%, #0A58CA 100%);
+  background: linear-gradient(155deg, #0D2137 0%, #1565C0 50%, #0277BD 100%);
   display: flex;
   flex-direction: column;
   align-items: center;

@@ -1,0 +1,56 @@
+/* ============================================================
+   WATER SUPPLY ADMIN — Brand Logo
+   ============================================================ */
+
+@import '../../styles/variables.css';
+
+.brand-logo-full {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.brand-logo-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.brand-logo-icon.dark {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+}
+
+.brand-logo-icon.light {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+}
+
+.brand-logo-text {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: var(--font-bold);
+  line-height: 1.2;
+}
+
+.brand-logo-text.dark {
+  color: var(--color-text-primary);
+}
+
+.brand-logo-text.light {
+  color: white;
+}
+
+.brand-logo-text span {
+  display: block;
+  font-size: var(--text-xs);
+  font-weight: var(--font-normal);
+  font-family: var(--font-sans);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.brand-logo-text.dark span { color: var(--color-text-muted); }
+.brand-logo-text.light span { color: rgba(255,255,255,0.5); }
