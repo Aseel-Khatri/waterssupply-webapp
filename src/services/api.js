@@ -34,7 +34,7 @@ async function request(endpoint, options = {}) {
 // ── User Model mapper ─────────────────────────────────────
 // Maps raw API JSON → consistent JS object
 // Mirrors Flutter UserModel.fromJson field-for-field
-export function mapUser(raw) {
+function mapUser(raw) {
   return {
     id:               raw.id,
     userTypeId:       raw.type,              // 1 = Admin, 2 = Delivery Boy

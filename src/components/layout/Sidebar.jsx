@@ -3,6 +3,7 @@
 // Admin sees all nav items; Delivery Boy sees only Deliveries
 // ============================================================
 
+import { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import { logout } from '../../services/api';
@@ -25,8 +26,6 @@ const IcShield      = () => <svg width="18" height="18" viewBox="0 0 24 24" fill
 const IcChevron     = ({open}) => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{transform: open ? 'rotate(180deg)' : 'none', transition:'transform 0.2s'}}><polyline points="6 9 12 15 18 9"/></svg>;
 const IcUser2       = () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>;
 const IcDrop        = () => <svg width="28" height="28" viewBox="0 0 24 24" fill="rgba(255,255,255,0.9)"><path d="M12 2C12 2 5 9.5 5 14a7 7 0 0 0 14 0c0-4.5-7-12-7-12z"/></svg>;
-
-import { useState } from 'react';
 
 // Nav structure — only shown to admin (userTypeId === 1)
 const ADMIN_NAV = [

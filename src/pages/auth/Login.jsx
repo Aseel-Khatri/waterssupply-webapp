@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import { login } from '../../services/api';
+import { AuthLogo } from '../../components/common/BrandLogo';
 import './Login.css';
 
 // ── Icons ─────────────────────────────────────────────────
@@ -26,6 +27,7 @@ export default function LoginPage() {
   const { signIn } = useAuth();
 
   const [identifier,  setIdentifier]  = useState('');
+  const [countryCode, setCountryCode] = useState('+92');
   const [password,    setPassword]    = useState('');
   const [showPass,    setShowPass]    = useState(false);
   const [remember,    setRemember]    = useState(false);
@@ -51,12 +53,19 @@ export default function LoginPage() {
     setFieldErrors(errs);
     if (Object.keys(errs).length) return;
 
+    // Admin logs in with phone number — backend matches the full number
+    // with country code (mobile app sends it the same way)
+    const loginIdentifier = userType === 1
+      ? `${countryCode}${identifier.trim().replace(/^0+/, '')}`
+      : identifier.trim();
+
     setLoading(true);
     try {
-      const user = await login({ identifier, password, userType });
+      const user = await login({ identifier: loginIdentifier, password, userType });
 
-      // Always persist to localStorage — sessionStorage dies on new tab/navigation
-      signIn(user, user.token, true);
+      // Remember me → localStorage (survives browser restart);
+      // otherwise sessionStorage (cleared when the tab closes)
+      signIn(user, user.token, remember);
       navigate('/dashboard');
     } catch (err) {
       if (err.code === 'ACCOUNT_EXPIRED') {
@@ -84,10 +93,7 @@ export default function LoginPage() {
       <div className="login-root">
         <div className="login-panel" style={{flex:1, maxWidth:480, margin:'0 auto'}}>
           <div className="login-logo">
-            <div className="login-logo-icon">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M12 2C12 2 5 9.5 5 14a7 7 0 0 0 14 0c0-4.5-7-12-7-12z"/></svg>
-            </div>
-            <div className="login-logo-name">Water Supply<span>Management System</span></div>
+            <AuthLogo />
           </div>
 
           <div className="expired-card">
@@ -111,10 +117,7 @@ export default function LoginPage() {
       {/* ── Left: Form Panel ───────────────────────── */}
       <div className="login-panel">
         <div className="login-logo">
-          <div className="login-logo-icon">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M12 2C12 2 5 9.5 5 14a7 7 0 0 0 14 0c0-4.5-7-12-7-12z"/></svg>
-          </div>
-          <div className="login-logo-name">Water Supply<span>Management System</span></div>
+          <AuthLogo />
         </div>
 
         <h1 className="login-heading">Welcome back</h1>
@@ -151,22 +154,53 @@ export default function LoginPage() {
             </div>
           </div>
 
-          {/* Identifier — phone or username depending on role */}
+          {/* Identifier — phone (with country code) or username depending on role */}
           <div className="form-group">
             <label htmlFor="identifier" className="form-label">{identifierLabel}</label>
-            <div className="input-wrapper">
-              <span className="input-icon"><IconUser /></span>
-              <input
-                id="identifier"
-                type={userType === 1 ? 'tel' : 'text'}
-                className={`form-input ${fieldErrors.identifier ? 'error' : ''}`}
-                placeholder={identifierPlaceholder}
-                value={identifier}
-                onChange={e => { setIdentifier(e.target.value); clearFieldError('identifier'); }}
-                autoComplete={userType === 1 ? 'tel' : 'username'}
-                autoFocus
-              />
-            </div>
+            {userType === 1 ? (
+              <div className="phone-input-row">
+                <select
+                  className="country-code-select"
+                  value={countryCode}
+                  onChange={e => setCountryCode(e.target.value)}
+                  aria-label="Country code"
+                >
+                  <option value="+92">🇵🇰 +92</option>
+                  <option value="+91">🇮🇳 +91</option>
+                  <option value="+971">🇦🇪 +971</option>
+                  <option value="+966">🇸🇦 +966</option>
+                  <option value="+1">🇺🇸 +1</option>
+                  <option value="+44">🇬🇧 +44</option>
+                </select>
+                <div className="input-wrapper phone-input-wrapper">
+                  <span className="input-icon"><IconUser /></span>
+                  <input
+                    id="identifier"
+                    type="tel"
+                    className={`form-input ${fieldErrors.identifier ? 'error' : ''}`}
+                    placeholder="3001234567"
+                    value={identifier}
+                    onChange={e => { setIdentifier(e.target.value.replace(/\D/g, '')); clearFieldError('identifier'); }}
+                    autoComplete="tel"
+                    autoFocus
+                  />
+                </div>
+              </div>
+            ) : (
+              <div className="input-wrapper">
+                <span className="input-icon"><IconUser /></span>
+                <input
+                  id="identifier"
+                  type="text"
+                  className={`form-input ${fieldErrors.identifier ? 'error' : ''}`}
+                  placeholder={identifierPlaceholder}
+                  value={identifier}
+                  onChange={e => { setIdentifier(e.target.value); clearFieldError('identifier'); }}
+                  autoComplete="username"
+                  autoFocus
+                />
+              </div>
+            )}
           </div>
 
           {/* Password */}

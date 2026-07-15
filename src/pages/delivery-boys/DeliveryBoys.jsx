@@ -6,7 +6,7 @@
 // Del:  POST /delete_delivery_boy { id }
 // ============================================================
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import {
   getDeliveryBoys, addDeliveryBoy, editDeliveryBoy, deleteDeliveryBoy
 } from '../../services/api';

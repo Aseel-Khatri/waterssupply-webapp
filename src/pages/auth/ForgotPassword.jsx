@@ -5,6 +5,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { forgotPassword } from '../../services/api';
+import { AuthLogo } from '../../components/common/BrandLogo';
 import './ForgotPassword.css';
 
 const IconMail  = () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,12 2,6"/></svg>;
@@ -49,10 +50,7 @@ export default function ForgotPasswordPage() {
       <div className="auth-card">
 
         <div className="auth-card-logo">
-          <div className="login-logo-icon">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M12 2C12 2 5 9.5 5 14a7 7 0 0 0 14 0c0-4.5-7-12-7-12z"/></svg>
-          </div>
-          <div className="login-logo-name">Water Supply<span>Management System</span></div>
+          <AuthLogo />
         </div>
 
         <div className="auth-card-icon-wrap">

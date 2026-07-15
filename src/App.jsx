@@ -2,35 +2,47 @@
 // WATER SUPPLY ADMIN — App Router
 // ============================================================
 
+import { lazy, Suspense } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './hooks/useAuth';
 
-// Layout
+// Layout + Login stay in the main bundle (most common cold entry);
+// every other page is code-split into its own chunk so the initial
+// download stays small.
 import AppLayout from './components/layout/AppLayout';
+import LoginPage from './pages/auth/Login';
 
 // Auth pages
-import LoginPage          from './pages/auth/Login';
-import RegisterPage       from './pages/auth/Register';
-import ForgotPasswordPage from './pages/auth/ForgotPassword';
-import OTPVerifyPage      from './pages/auth/OTPVerify';
-import ResetPasswordPage  from './pages/auth/ResetPassword';
+const RegisterPage       = lazy(() => import('./pages/auth/Register'));
+const ForgotPasswordPage = lazy(() => import('./pages/auth/ForgotPassword'));
+const OTPVerifyPage      = lazy(() => import('./pages/auth/OTPVerify'));
+const ResetPasswordPage  = lazy(() => import('./pages/auth/ResetPassword'));
 
 // App pages
-import DashboardPage        from './pages/dashboard/Dashboard';
-import DeliveriesPage       from './pages/deliveries/Deliveries';
-import CustomerRegisterPage from './pages/customers/CustomerRegister';
-import CustomersListPage    from './pages/customers/CustomersList';
-import CustomerDetailPage   from './pages/customers/CustomerDetail';
-import DeliveryBoysPage     from './pages/delivery-boys/DeliveryBoys';
-import CounterSalesPage     from './pages/counter-sales/CounterSales';
-import ExpensesPage         from './pages/expenses/Expenses';
-import SupportPage          from './pages/support/Support';
-import EmailVerificationPage from './pages/profile/EmailVerification';
-import PlantPage          from './pages/plant/Plant';
-import SubscriptionPage     from './pages/subscription/Subscription';
-import ProfilePage          from './pages/profile/Profile';
+const DashboardPage         = lazy(() => import('./pages/dashboard/Dashboard'));
+const DeliveriesPage        = lazy(() => import('./pages/deliveries/Deliveries'));
+const CustomerRegisterPage  = lazy(() => import('./pages/customers/CustomerRegister'));
+const CustomersListPage     = lazy(() => import('./pages/customers/CustomersList'));
+const CustomerDetailPage    = lazy(() => import('./pages/customers/CustomerDetail'));
+const DeliveryBoysPage      = lazy(() => import('./pages/delivery-boys/DeliveryBoys'));
+const CounterSalesPage      = lazy(() => import('./pages/counter-sales/CounterSales'));
+const ExpensesPage          = lazy(() => import('./pages/expenses/Expenses'));
+const SupportPage           = lazy(() => import('./pages/support/Support'));
+const EmailVerificationPage = lazy(() => import('./pages/profile/EmailVerification'));
+const PlantPage             = lazy(() => import('./pages/plant/Plant'));
+const SubscriptionPage      = lazy(() => import('./pages/subscription/Subscription'));
+const ProfilePage           = lazy(() => import('./pages/profile/Profile'));
 
 import './styles/global.css';
+
+// Shown while a lazy page chunk downloads
+function PageLoader() {
+  return (
+    <div style={{ display:'flex', alignItems:'center', justifyContent:'center', minHeight:'50vh' }}>
+      <div className="page-loader-spinner" />
+    </div>
+  );
+}
 
 // ── Guards ────────────────────────────────────────────────
 function PrivateRoute({ children }) {
@@ -52,6 +64,7 @@ export default function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
+        <Suspense fallback={<PageLoader />}>
         <Routes>
 
           {/* ── Public routes ─────────────────────────── */}
@@ -90,6 +103,7 @@ export default function App() {
           <Route path="*" element={<CatchAll />} />
 
         </Routes>
+        </Suspense>
       </BrowserRouter>
     </AuthProvider>
   );

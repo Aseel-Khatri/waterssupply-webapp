@@ -1,16 +1,14 @@
 // ============================================================
-// WATER SUPPLY ADMIN — Brand Logo Component
-// Renders logo from /logo.svg with fallback to water drop SVG
-//
-// FILES TO PLACE:
-//   public/logo.svg      — Your brand logo (shown in sidebar, login, etc.)
-//   public/logo-white.svg — White version for dark backgrounds
-//   public/favicon.ico    — Browser tab icon (16x16 / 32x32)
-//   public/favicon.svg    — Modern SVG favicon
-//   index.html            — Update <link rel="icon"> to point to your favicon
+// WATER SUPPLY ADMIN — Brand Logo
+// Renders the full brand logo from public/logo.png on auth pages,
+// with a water-drop + text fallback if the image is missing.
 // ============================================================
 
 import { useState } from 'react';
+
+// App is served under a base path (/web-app-new/), so public assets
+// must be prefixed with it
+const BASE = import.meta.env.BASE_URL;
 
 // Fallback water drop icon
 const DropIcon = ({ size = 22, color = 'white' }) => (
@@ -19,34 +17,26 @@ const DropIcon = ({ size = 22, color = 'white' }) => (
   </svg>
 );
 
-export function BrandIcon({ size = 22, variant = 'white' }) {
+export function AuthLogo() {
   const [imgError, setImgError] = useState(false);
-  const src = variant === 'white' ? '/logo-white.png' : '/logo.png';
 
-  if (imgError) return <DropIcon size={size} color={variant === 'white' ? 'white' : 'currentColor'} />;
+  if (imgError) {
+    return (
+      <>
+        <div className="login-logo-icon">
+          <DropIcon size={22} />
+        </div>
+        <div className="login-logo-name">Water Supply<span>Management System</span></div>
+      </>
+    );
+  }
 
   return (
     <img
-      src={src}
-      alt="Water Supply"
-      width={size}
-      height={size}
+      src={`${BASE}logo.png`}
+      alt="Water Supply Soft"
+      className="auth-logo-img"
       onError={() => setImgError(true)}
-      style={{ objectFit: 'contain' }}
     />
-  );
-}
-
-export function BrandLogoFull({ variant = 'dark' }) {
-  return (
-    <div className="brand-logo-full">
-      <div className={`brand-logo-icon ${variant}`}>
-        <BrandIcon size={22} variant={variant === 'dark' ? 'color' : 'white'} />
-      </div>
-      <div className={`brand-logo-text ${variant}`}>
-        Water Supply
-        <span>Management System</span>
-      </div>
-    </div>
   );
 }

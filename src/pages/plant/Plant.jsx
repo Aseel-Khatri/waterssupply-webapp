@@ -7,7 +7,7 @@
 // POST /plant_order  { user_id, plant_id, empty_rec, refil_rec, am_rec }
 // ============================================================
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import {
   getAllPlants, addPlant, editPlant, deletePlant, submitPlantOrder
 } from '../../services/api';

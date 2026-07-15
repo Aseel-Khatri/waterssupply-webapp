@@ -1,0 +1,10 @@
+# Dependencies — restored with `npm install`, never commit
+node_modules/
+
+# Local tooling
+.claude/
+
+# Editor / OS noise
+.DS_Store
+Thumbs.db
+*.log

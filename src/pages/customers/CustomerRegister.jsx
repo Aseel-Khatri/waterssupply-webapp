@@ -38,15 +38,6 @@ const todayStr = () => {
   return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
 };
 
-// Default start date is tomorrow (not today) — starting a customer's
-// delivery cycle "today" was silently creating a same-day delivery
-// record, which then didn't surface correctly on the Today Delivery list.
-const tomorrowStr = () => {
-  const d = new Date();
-  d.setDate(d.getDate() + 1);
-  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
-};
-
 // Parse address for pre-fill (could be JSON or plain text)
 function parseAddressForEdit(raw) {
   if (!raw) return '';
@@ -81,7 +72,7 @@ export default function CustomerRegisterPage() {
     bottleBalance: '',
     deliveryBoyId: editData?.delivery_boy_id?.toString() ?? '0',
     other:         editData?.other ?? '',
-    date:          editData?.datee ?? tomorrowStr(),
+    date:          editData?.datee ?? todayStr(),
   });
   const [supplyType,    setSupplyType]    = useState(editData?.type?.toString() ?? '');
   const [selectedDays,  setSelectedDays]  = useState(() => {
@@ -180,8 +171,16 @@ export default function CustomerRegisterPage() {
         payload.customer_id = editData.id;
         payload.is_bottle   = supplyType;
       } else {
-        payload.amount_blnc = form.amountBalance || '0';
-        payload.bottle_blnc = form.bottleBalance || '0';
+        // Only send opening balances when actually non-zero — the backend
+        // creates a filling-card entry dated today whenever these fields are
+        // present, which marks the customer as "already delivered" and hides
+        // them from the Today Delivery list.
+        const amountBlnc = Number(form.amountBalance) || 0;
+        const bottleBlnc = Number(form.bottleBalance) || 0;
+        if (amountBlnc !== 0 || bottleBlnc !== 0) {
+          payload.amount_blnc = String(amountBlnc);
+          payload.bottle_blnc = String(bottleBlnc);
+        }
       }
 
       await saveCustomer(payload);
@@ -205,7 +204,7 @@ export default function CustomerRegisterPage() {
             {!isEdit && (
               <button className="btn-primary" onClick={() => {
                 setSuccess(false);
-                setForm({ firstName:'',lastName:'',phone:'',address:'',price:'',deposit:'',amountBalance:'',bottleBalance:'',deliveryBoyId:'0',other:'',date:tomorrowStr()});
+                setForm({ firstName:'',lastName:'',phone:'',address:'',price:'',deposit:'',amountBalance:'',bottleBalance:'',deliveryBoyId:'0',other:'',date:todayStr()});
                 setSupplyType('');
                 setSelectedDays([]);
               }}>
@@ -399,16 +398,6 @@ export default function CustomerRegisterPage() {
                 </select>
               </div>
             </div>
-            {supplyType !== '3' && (
-              <div className="form-group">
-                <label className="form-label">Notes</label>
-                <div className="input-wrapper">
-                  <span className="input-icon"><IcTag /></span>
-                  <input type="text" className="form-input"
-                    placeholder="Optional notes" value={form.other} onChange={set('other')} />
-                </div>
-              </div>
-            )}
           </div>
 
           {/* Balance fields — only on create */}
