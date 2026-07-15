@@ -25,7 +25,8 @@ const IcFactory     = () => <svg width="18" height="18" viewBox="0 0 24 24" fill
 const IcShield      = () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>;
 const IcChevron     = ({open}) => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{transform: open ? 'rotate(180deg)' : 'none', transition:'transform 0.2s'}}><polyline points="6 9 12 15 18 9"/></svg>;
 const IcUser2       = () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>;
-const IcDrop        = () => <svg width="28" height="28" viewBox="0 0 24 24" fill="rgba(255,255,255,0.9)"><path d="M12 2C12 2 5 9.5 5 14a7 7 0 0 0 14 0c0-4.5-7-12-7-12z"/></svg>;
+const IcMenu        = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>;
+const IcExpand      = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="13 17 18 12 13 7"/><polyline points="6 17 11 12 6 7"/></svg>;
 
 // Nav structure — only shown to admin (userTypeId === 1)
 const ADMIN_NAV = [
@@ -54,7 +55,7 @@ const DELIVERY_BOY_NAV = [
   { label: 'Deliveries', icon: <IcDelivery />, to: '/deliveries' },
 ];
 
-export default function Sidebar({ collapsed, onCollapse, mobileOpen }) {
+export default function Sidebar({ collapsed, onCollapse, mobileOpen, onMobileClose }) {
   const { user, signOut } = useAuth();
   const navigate           = useNavigate();
   const [openGroups, setOpenGroups] = useState({ Customers: true });
@@ -71,25 +72,37 @@ export default function Sidebar({ collapsed, onCollapse, mobileOpen }) {
     navigate('/login');
   };
 
+  // On mobile the sidebar is an overlay — the toggle closes it.
+  // On desktop it collapses to an icon rail instead.
+  const handleToggle = () => {
+    if (window.matchMedia('(max-width: 768px)').matches) {
+      onMobileClose();
+    } else {
+      onCollapse();
+    }
+  };
+
+  // Tapping a nav link on mobile should also dismiss the overlay
+  const handleNavClick = () => {
+    if (mobileOpen) onMobileClose();
+  };
+
   return (
     <aside className={`sidebar ${collapsed ? 'sidebar--collapsed' : ''} ${mobileOpen ? 'mobile-open' : ''}`}>
 
       {/* ── Brand ───────────────────────────────── */}
       <div className="sidebar-brand">
-        <div className="sidebar-brand-icon"><IcDrop /></div>
+        <div className="sidebar-brand-icon">
+          <img src={`${import.meta.env.BASE_URL}favicon.png`} alt="Water Supply Soft" />
+        </div>
         {!collapsed && (
           <div className="sidebar-brand-name">
             Water Supply
             <span>Management</span>
           </div>
         )}
-        <button className="sidebar-collapse-btn" onClick={onCollapse} aria-label="Toggle sidebar">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-            {collapsed
-              ? <><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></>
-              : <><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></>
-            }
-          </svg>
+        <button className="sidebar-collapse-btn" onClick={handleToggle} aria-label="Toggle sidebar">
+          {collapsed ? <IcExpand /> : <IcMenu />}
         </button>
       </div>
 
@@ -131,6 +144,7 @@ export default function Sidebar({ collapsed, onCollapse, mobileOpen }) {
                       <NavLink
                         key={child.to}
                         to={child.to}
+                        onClick={handleNavClick}
                         className={({ isActive }) =>
                           `sidebar-nav-item sidebar-child-item ${isActive ? 'active' : ''}`
                         }
@@ -149,6 +163,7 @@ export default function Sidebar({ collapsed, onCollapse, mobileOpen }) {
             <NavLink
               key={item.to}
               to={item.to}
+              onClick={handleNavClick}
               className={({ isActive }) =>
                 `sidebar-nav-item ${isActive ? 'active' : ''}`
               }

@@ -33,12 +33,19 @@
 .sidebar-brand-icon {
   width: 36px;
   height: 36px;
-  background: linear-gradient(135deg, var(--color-primary), #0277BD);
+  background: white;
   border-radius: var(--radius-md);
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  overflow: hidden;
+}
+
+.sidebar-brand-icon img {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
 }
 
 .sidebar-brand-name {
@@ -76,6 +83,25 @@
 }
 
 .sidebar-collapse-btn:hover { color: white; background: rgba(255,255,255,0.08); }
+
+/* Collapsed rail: stack the brand icon above the toggle so the
+   button stays inside the 68px rail instead of overflowing it */
+.sidebar--collapsed .sidebar-brand {
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-4) var(--space-2);
+}
+
+.sidebar--collapsed .sidebar-collapse-btn {
+  margin-left: 0;
+  color: rgba(255,255,255,0.6);
+}
+
+.sidebar--collapsed .sidebar-nav-item,
+.sidebar--collapsed .sidebar-logout-btn {
+  justify-content: center;
+}
 
 /* ── User chip ───────────────────────────────────────────── */
 .sidebar-user {
