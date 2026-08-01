@@ -267,3 +267,160 @@
   .db-list { grid-template-columns: 1fr; }
   .db-header { flex-wrap: wrap; }
 }
+
+/* ── View deliveries button ──────────────────────────────── */
+.db-action-btn.view { background: #ECFDF5; color: #059669; }
+.db-action-btn.view:hover { background: #D1FAE5; }
+
+/* ── Deliveries panel ────────────────────────────────────── */
+.db-deliveries {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.db-del-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.db-del-back {
+  width: 36px; height: 36px;
+  display: flex; align-items: center; justify-content: center;
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  color: var(--color-text-secondary);
+  cursor: pointer; flex-shrink: 0;
+  transition: border-color var(--transition-fast), color var(--transition-fast);
+}
+.db-del-back:hover { border-color: var(--color-primary); color: var(--color-primary); }
+
+.db-del-avatar {
+  width: 44px; height: 44px;
+  border-radius: var(--radius-md);
+  color: white;
+  font-size: var(--text-lg); font-weight: var(--font-bold);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+
+.db-del-info { display: flex; flex-direction: column; gap: 2px; }
+
+.db-del-name {
+  font-family: var(--font-display);
+  font-size: var(--text-xl); font-weight: var(--font-bold);
+  color: var(--color-text-primary);
+}
+
+.db-del-sub {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+/* Reuse tab/table/pagination styles from Deliveries page */
+.db-deliveries .tab-bar {
+  display: flex; gap: 2px;
+  background: var(--color-bg);
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 3px; width: fit-content;
+}
+
+.db-deliveries .tab-btn {
+  padding: 7px var(--space-6);
+  border: none;
+  border-radius: calc(var(--radius-md) - 2px);
+  font-size: var(--text-sm); font-weight: var(--font-medium);
+  font-family: var(--font-sans);
+  color: var(--color-text-muted); background: transparent;
+  cursor: pointer; transition: all var(--transition-fast);
+}
+
+.db-deliveries .tab-btn.active {
+  background: var(--color-surface);
+  color: var(--color-primary);
+  box-shadow: var(--shadow-sm);
+}
+
+.db-deliveries .table-card {
+  background: var(--color-surface);
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.db-deliveries .table-state {
+  display: flex; flex-direction: column; align-items: center;
+  justify-content: center; gap: var(--space-3);
+  padding: 60px var(--space-6);
+  color: var(--color-text-muted); font-size: var(--text-sm);
+}
+
+.db-deliveries .table-state.error { color: var(--color-error); }
+
+.db-deliveries .table-responsive { overflow-x: auto; }
+
+.db-deliveries .data-table {
+  width: 100%; border-collapse: collapse;
+  font-size: var(--text-sm);
+}
+
+.db-deliveries .data-table thead tr {
+  background: var(--color-bg);
+  border-bottom: 1.5px solid var(--color-border);
+}
+
+.db-deliveries .data-table th {
+  padding: 11px var(--space-4); text-align: left;
+  font-size: var(--text-xs); font-weight: var(--font-semibold);
+  color: var(--color-text-muted); text-transform: uppercase;
+  letter-spacing: 0.05em; white-space: nowrap;
+}
+
+.db-deliveries .data-table tbody tr {
+  border-bottom: 1px solid var(--color-border);
+  transition: background var(--transition-fast);
+}
+.db-deliveries .data-table tbody tr:last-child { border-bottom: none; }
+.db-deliveries .data-table tbody tr:hover { background: var(--color-bg); }
+
+.db-deliveries .data-table td {
+  padding: 12px var(--space-4);
+  color: var(--color-text-primary);
+}
+
+.db-deliveries .td-sr { color: var(--color-text-muted); font-size: var(--text-xs); }
+.db-deliveries .td-phone { white-space: nowrap; color: var(--color-text-secondary); }
+.db-deliveries .td-date  { white-space: nowrap; color: var(--color-text-muted); font-size: var(--text-xs); }
+
+.db-deliveries .customer-name { font-weight: var(--font-medium); color: var(--color-primary); }
+
+.db-deliveries .address-text {
+  color: var(--color-text-secondary); max-width: 220px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block;
+}
+
+.db-deliveries .badge-type {
+  display: inline-flex; padding: 2px 8px;
+  border-radius: var(--radius-full); font-size: var(--text-xs);
+  font-weight: var(--font-semibold);
+}
+.db-deliveries .badge-type.can    { background: #E0F2FE; color: #0369A1; }
+.db-deliveries .badge-type.bottle { background: #F0FDF4; color: #15803D; }
+.db-deliveries .badge-type.other  { background: #F3F4F6; color: #374151; }
+
+.db-deliveries .pagination {
+  display: flex; align-items: center; justify-content: flex-end; gap: var(--space-3);
+}
+.db-deliveries .page-btn {
+  display: flex; align-items: center; gap: var(--space-1);
+  padding: 7px var(--space-4); border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-md); background: var(--color-surface);
+  font-size: var(--text-sm); font-weight: var(--font-medium); font-family: var(--font-sans);
+  color: var(--color-text-secondary); cursor: pointer; transition: all var(--transition-fast);
+}
+.db-deliveries .page-btn:hover:not(:disabled) { border-color: var(--color-primary); color: var(--color-primary); }
+.db-deliveries .page-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.db-deliveries .page-indicator { font-size: var(--text-sm); color: var(--color-text-muted); }

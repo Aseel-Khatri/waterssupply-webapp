@@ -34,7 +34,7 @@ async function request(endpoint, options = {}) {
 // ── User Model mapper ─────────────────────────────────────
 // Maps raw API JSON → consistent JS object
 // Mirrors Flutter UserModel.fromJson field-for-field
-function mapUser(raw) {
+export function mapUser(raw) {
   return {
     id:               raw.id,
     userTypeId:       raw.type,              // 1 = Admin, 2 = Delivery Boy
@@ -221,6 +221,7 @@ export async function getCustomerDetail(customerId) {
 export async function getCustomers({ status, page, sort, keyword }) {
   const body = { status: String(status), page: String(page), limit: '25', sort };
   if (keyword) body.keyword = keyword;
+  if (delivery_boy_id) body.delivery_boy_id = delivery_boy_id;
   return request('get_customers', { method: 'POST', body: JSON.stringify(body) });
 }
 
@@ -281,9 +282,10 @@ export async function getDashboardStats() {
  * Body: { filter, page, sort, keyword? }
  * filter: 'today' | 'all'
  */
-export async function getDeliveries({ filter, page, sort, keyword }) {
+export async function getDeliveries({ filter, page, sort, keyword, delivery_boy_id }) {
   const body = { filter, page: String(page), sort };
   if (keyword) body.keyword = keyword;
+  if (delivery_boy_id) body.delivery_boy_id = delivery_boy_id;
   return request('deliveries', {
     method: 'POST',
     body: JSON.stringify(body),
@@ -396,26 +398,12 @@ export async function deletePlant(id) {
   return request('delete_plant', { method: 'POST', body: JSON.stringify({ id }) });
 }
 
-export async function submitPlantOrder({ user_id, plant_id, empty_rec, refil_rec, am_rec }) {
-  const body = { plant_id, empty_rec, refil_rec, am_rec };
-  if (user_id) body.user_id = user_id;
+export async function submitPlantOrder({ plant_id, empty_rec, refil_rec, am_rec }) {
   return request('plant_order', {
     method: 'POST',
-    body: JSON.stringify(body),
+    body: JSON.stringify({ plant_id, empty_rec, refil_rec, am_rec }),
   });
 }
-
-
-// ── Regular Customer Delivery (routine deliveries) ─────────
-// NOT the Water Plant module — this is for everyday customer
-// bottle/can deliveries shown on the main Deliveries page.
-
-/**
- * Record a delivery for a regular customer
- * POST /save_bottle_data
- * Body: { client_id, filled_deliver, empty_recieved, amount_recieved,
- *         delivery_boy?, delivery_date?, delivery_time? }
- */
 export async function saveBottleData({
   client_id, filled_deliver, empty_recieved, amount_recieved,
   delivery_boy, delivery_date, delivery_time,

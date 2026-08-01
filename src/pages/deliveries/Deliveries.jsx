@@ -351,13 +351,11 @@ export default function DeliveriesPage() {
           <p className="page-sub">Welcome {user?.coName || user?.userName}</p>
         </div>
       </div>
-
-      {isAdmin && (
-        <div className="tab-bar">
+      
+      <div className="tab-bar">
           <button className={`tab-btn ${filter === 'today' ? 'active' : ''}`} onClick={() => setFilter('today')}>Today</button>
           <button className={`tab-btn ${filter === 'all' ? 'active' : ''}`} onClick={() => setFilter('all')}>All</button>
         </div>
-      )}
 
       <div className="table-toolbar">
         <form className="search-form" onSubmit={handleSearch}>

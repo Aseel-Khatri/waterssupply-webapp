@@ -256,16 +256,16 @@ function PlantOrderModal({ plant, onClose, onSaved }) {
 
           <div className="pl-grid-2">
             <div className="form-group">
-              <label className="form-label">Refill Received <span className="req">*</span></label>
-              <input type="number" className={`pl-input ${errors.refil_rec ? 'error' : ''}`}
-                placeholder="0" value={form.refil_rec} onChange={set('refil_rec')} autoFocus min="0" />
-              {errors.refil_rec && <span className="field-hint error-hint">{errors.refil_rec}</span>}
-            </div>
-            <div className="form-group">
               <label className="form-label">Empty Received <span className="req">*</span></label>
               <input type="number" className={`pl-input ${errors.empty_rec ? 'error' : ''}`}
                 placeholder="0" value={form.empty_rec} onChange={set('empty_rec')} min="0" />
               {errors.empty_rec && <span className="field-hint error-hint">{errors.empty_rec}</span>}
+            </div>
+            <div className="form-group">
+              <label className="form-label">Refill Received <span className="req">*</span></label>
+              <input type="number" className={`pl-input ${errors.refil_rec ? 'error' : ''}`}
+                placeholder="0" value={form.refil_rec} onChange={set('refil_rec')} autoFocus min="0" />
+              {errors.refil_rec && <span className="field-hint error-hint">{errors.refil_rec}</span>}
             </div>
           </div>
 
