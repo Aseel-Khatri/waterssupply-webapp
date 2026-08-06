@@ -221,7 +221,6 @@ export async function getCustomerDetail(customerId) {
 export async function getCustomers({ status, page, sort, keyword }) {
   const body = { status: String(status), page: String(page), limit: '25', sort };
   if (keyword) body.keyword = keyword;
-  if (delivery_boy_id) body.delivery_boy_id = delivery_boy_id;
   return request('get_customers', { method: 'POST', body: JSON.stringify(body) });
 }
 

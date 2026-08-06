@@ -37,8 +37,7 @@ const ADMIN_NAV = [
     icon: <IcCustomers />,
     children: [
       { label: 'Register Customer', icon: <IcUserPlus />,  to: '/customers/register' },
-      { label: 'Active',            icon: <IcUserCheck />, to: '/customers/active' },
-      { label: 'In-Active',         icon: <IcUserX />,     to: '/customers/inactive' },
+      { label: 'Customers Listing',            icon: <IcUserCheck />, to: '/customers/active' }
     ],
   },
   { label: 'Delivery Boys',     icon: <IcBike />,        to: '/delivery-boys' },
